@@ -33,7 +33,7 @@ public class MaaApiService : IMaaApiService
 
     private async Task<(bool Cached, JObject? Response)> RequestWithFallback(string api, string primaryBaseUrl, string? fallbackBaseUrl = null, bool allowFallbackToCache = true)
     {
-        var result = await TryRequest(api, primaryBaseUrl, allowFallbackToCache);
+        var result = await TryRequest(api, primaryBaseUrl, string.IsNullOrEmpty(fallbackBaseUrl) && allowFallbackToCache);
         if (result.Response != null || string.IsNullOrEmpty(fallbackBaseUrl))
         {
             return result;
