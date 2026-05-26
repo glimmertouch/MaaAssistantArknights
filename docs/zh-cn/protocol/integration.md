@@ -118,7 +118,7 @@ B服：`张三`，可输入 `张三`、`张`、`三`
 关卡名，默认为空，识别当前/上次的关卡。不支持运行中设置。  
 目前支持导航的关卡有：
 
-- 全部主线关卡。可在关卡末尾添加 `-NORMAL` 或 `-HARD` 来切换标准或磨难关卡。
+- 全部主线关卡。可在关卡末尾添加 `-NORMAL` 或 `-HARD` 切换难度：10-14 章对应标准/磨难，15 章及以后对应常规/险地。
 - 龙门币、作战记录的 5 / 6 关，但必须输入 `CE-6` / `LS-6`。MAA 会在第六关无法代理的情况下自动切换至第五关。
 - 技能书、采购凭证、碳本第 5 关，必须输入 `CA-5` / `AP-5` / `SK-5`。
 - 所有芯片本。必须输入完整关卡编号，如 `PR-A-1`。
@@ -910,32 +910,44 @@ Tag 等级（大于等于 3）和对应的希望招募时限，单位为分钟�
 ::: field name="enable" type="boolean" optional default="true"  
 是否启用本任务。  
 :::  
-::: field name="theme" type="string" optional default="Fire"  
+::: field name="theme" type="string" optional default="Tales"  
 主题。
 <br>
-`Fire` - _沙中之火_
+`Fire` - _沙中之火_（已关闭）
 <br>
-`Tales` - _沙洲遗闻_  
+`Tales` - _沙洲遗闻_
+<br>
+`RelaunchAnchor` - _重启锚点_  
 :::  
 ::: field name="mode" type="number" optional default="0"  
-模式。
+模式。不同主题支持的模式不同：
 <br>
-`0` - 刷分与建造点，进入战斗直接退出。
+**Tales（沙洲遗闻）：**
 <br>
-`1` - 沙中之火：刷赤金，联络员买水后基地锻造；沙洲遗闻：自动制造物品并读档刷货币。  
+`0` - 无存档，通过进出关卡刷生息点数。
+<br>
+`1` - 有存档，通过组装支援道具刷生息点数。
+<br>
+**RelaunchAnchor（重启锚点）：**
+<br>
+`16` (`RA1`) - RA-1，自动执行精耕细作、建设、交付资源、结算循环。
+<br>
+`32` (`RA15`) - RA-15，用圣聆初雪完成 60 杀任务。
+<br>
+`48` (`RA4`) - RA-4，使用筹划经营策略给予的赤金解锁区域，使用维什戴尔完成击杀 boss 任务。
 :::  
 ::: field name="tools_to_craft" type="array<string>" optional default="[&quot;荧光棒&quot;]"  
-自动制造的物品，建议填写子串。  
+自动制造的物品，建议填写子串。仅 Tales 主题有效。  
 :::  
 ::: field name="increment_mode" type="number" optional default="0"  
-点击类型。
+点击类型。仅 Tales 主题有效。
 <br>
 `0` - 连点
 <br>
 `1` - 长按  
 :::  
 ::: field name="num_craft_batches" type="number" optional default="16"  
-单次最大制造轮数。  
+单次最大制造轮数。仅 Tales 主题有效。  
 :::  
 ::::
 
@@ -1158,5 +1170,8 @@ bool ASSTAPI AsstSetInstanceOption(AsstHandle handle, AsstInstanceOptionKey key,
 :::  
 ::: field name="KillAdbOnExit" type="boolean" optional  
 退出时是否杀掉 Adb 进程。可用值："0" 或 "1"。枚举值：5。  
+:::  
+::: field name="ClientType" type="string" optional  
+客户端类型（游戏渠道）。大多数连接配置不需要设置。仅当传给 `AsstConnect` / `AsstAsyncConnect` 的 `config` 在连接阶段命令里使用 `[PackageName]` 时，才需要在连接前调用 `AsstSetInstanceOption(..., ClientType, ...)`。当前内置配置仅 `Androws` 和 `WSA` 的 `displayId` 查询依赖该值。该选项不替代 StartUp / CloseDown 等任务参数里的 `client_type`。枚举值：6。  
 :::  
 ::::

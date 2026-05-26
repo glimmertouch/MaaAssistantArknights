@@ -12,6 +12,7 @@
 // </copyright>
 
 #nullable enable
+using System;
 using static MaaWpfGui.Main.AsstProxy;
 
 namespace MaaWpfGui.Configuration.Single.MaaTask;
@@ -25,7 +26,10 @@ public class ReclamationTask : BaseTask
 
     public ReclamationTheme Theme { get; set; } = ReclamationTheme.Tales;
 
-    public ReclamationMode Mode { get; set; } = ReclamationMode.Archive;
+    /// <summary>
+    /// Gets or sets 生息演算模式
+    /// </summary>
+    public ReclamationMode Mode { get; set; } = ReclamationMode.ProsperityInSave;
 
     /// <summary>
     /// Gets or sets 要组装的支援道具
@@ -56,17 +60,38 @@ public enum ReclamationTheme
     /// 沙洲遗闻
     /// </summary>
     Tales,
+
+    /// <summary>
+    /// 重启锚点（RELAUNCH ANCHOR）
+    /// </summary>
+    RelaunchAnchor,
 }
 
+[Flags]
 public enum ReclamationMode
 {
     /// <summary>
-    /// 无存档，通过进出关卡刷生息点数
+    /// #沙洲遗闻, 无存档，通过进出关卡刷生息点数
     /// </summary>
-    NoArchive = 0,
+    ProsperityNoSave = 0,
 
     /// <summary>
-    /// 有存档，通过组装支援道具刷生息点数
+    /// #沙洲遗闻, 有存档，通过组装支援道具刷生息点数
     /// </summary>
-    Archive = 1,
+    ProsperityInSave = 1,
+
+    /// <summary>
+    /// #重启锚点, RA-1
+    /// </summary>
+    RA1 = 1 << 4,
+
+    /// <summary>
+    /// #重启锚点, RA-15
+    /// </summary>
+    RA15 = 2 << 4,
+
+    /// <summary>
+    /// #重启锚点, RA-4
+    /// </summary>
+    RA4 = 3 << 4,
 }

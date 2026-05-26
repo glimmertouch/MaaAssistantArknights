@@ -123,33 +123,6 @@ public class FightSettingsUserControlModel : TaskSettingsViewModel, FightSetting
     }
 
     /// <summary>
-    /// Gets or sets the stage1.
-    /// </summary>
-    public string? Stage
-    {
-        get => field;
-        set {
-            if (field == value)
-            {
-                return;
-            }
-
-            if (CustomStageCode)
-            {
-                // 从后往前删
-                if (field?.Length != 3 && value != null)
-                {
-                    value = ToUpperAndCheckStage(value);
-                }
-            }
-
-            SetAndNotify(ref field, value);
-            SetFightParams();
-            Instances.TaskQueueViewModel.UpdateDatePrompt();
-        }
-    }
-
-    /// <summary>
     /// Gets or sets a value indicating whether to use custom stage code.
     /// </summary>
     public bool CustomStageCode
@@ -466,6 +439,23 @@ public class FightSettingsUserControlModel : TaskSettingsViewModel, FightSetting
     }
 
     #endregion Drops
+
+    public string StagePlanTip { get => field; set => SetAndNotify(ref field, value); } = string.Empty;
+
+    public void StagePlanTipRefresh()
+    {
+        var stage = GetFightStage(StagePlan.Select(i => i.Stage)) ?? "--";
+        if (stage == string.Empty)
+        {
+            stage = LocalizationHelper.GetString("DefaultStage");
+        }
+
+        StagePlanTip = LocalizationHelper.GetStringFormat("StagePlanTip", stage);
+        if (CustomStageCode)
+        {
+            StagePlanTip += $"\n\n{LocalizationHelper.GetString("CustomStageCodeTip")}";
+        }
+    }
 
     public static Dictionary<string, string> AnnihilationModeList { get; } = new()
     {
@@ -895,6 +885,8 @@ public class FightSettingsUserControlModel : TaskSettingsViewModel, FightSetting
 
     #endregion 关卡列表更新
 
+    #region Data Class
+
     public class SanityInfo
     {
         [JsonProperty("current_sanity")]
@@ -921,6 +913,10 @@ public class FightSettingsUserControlModel : TaskSettingsViewModel, FightSetting
         [JsonProperty("finished")]
         public bool IsFinished { get; set; }
     }
+
+    #endregion Data Class
+
+    #region UI Item
 
     public class WeeklyScheduleItem(DayOfWeek dayOfWeek) : PropertyChangedBase
     {
@@ -976,6 +972,8 @@ public class FightSettingsUserControlModel : TaskSettingsViewModel, FightSetting
         // 仅供 ComboBox本身 和 手写Stage的TextBlock 绑定使用
         public bool IsOpen { get => field; set => SetAndNotify(ref field, value); } = Instances.TaskQueueViewModel.IsStageOpen(stage);
     }
+
+    #endregion UI Item
 
     private struct UiRefreshingScope : IDisposable
     {

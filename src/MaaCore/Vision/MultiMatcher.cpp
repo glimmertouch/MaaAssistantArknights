@@ -14,11 +14,14 @@ using namespace asst;
 
 MultiMatcher::ResultsVecOpt MultiMatcher::analyze() const
 {
+    if (m_roi.empty()) {
+        return std::nullopt;
+    }
     auto match_results = Matcher::preproc_and_match(make_roi(m_image, m_roi), m_params);
 
     std::vector<Result> results;
     for (size_t index = 0; index < match_results.size(); ++index) {
-        const auto& [matched, templ, templ_name] = match_results[index];
+        const auto& [matched, templ, templ_name, _] = match_results[index];
         if (matched.empty()) {
             continue;
         }

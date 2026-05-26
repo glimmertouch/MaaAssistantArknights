@@ -136,7 +136,7 @@ public class SettingsViewModel : Screen
 
         _runningState = RunningState.Instance;
         _runningState.StateChanged += (_, e) => {
-            Idle = e.Idle;
+            Idle = e.NewState.Idle;
 
             // Inited = e.Inited;
             // Stopping = e.Stopping;
@@ -555,33 +555,61 @@ public class SettingsViewModel : Screen
             NewConfigurationName = DateTime.Now.ToString("yy/MM/dd HH:mm:ss");
         }
 
-        if (ConfigurationHelper.AddConfiguration(NewConfigurationName, CurrentConfiguration) && ConfigFactory.AddConfiguration(NewConfigurationName, CurrentConfiguration))
+        bool existsInHelper = ConfigurationHelper.ConfigurationExists(NewConfigurationName);
+        bool existsInFactory = ConfigFactory.ConfigurationExists(NewConfigurationName);
+
+        // 两边都已存在，提示并返回
+        if (existsInHelper && existsInFactory)
         {
-            ConfigurationList.Add(new CombinedData { Display = NewConfigurationName, Value = NewConfigurationName });
-
-            // 配置数量大于 1 时，标题栏显示配置名
-            UpdateWindowTitle();
-
-            var growlInfo = new GrowlInfo {
+            Growl.Info(new GrowlInfo {
                 IsCustom = true,
-                Message = string.Format(LocalizationHelper.GetString("AddConfigSuccess"), NewConfigurationName),
+                Message = LocalizationHelper.GetStringFormat("ConfigExists", NewConfigurationName),
                 IconKey = "HangoverGeometry",
                 IconBrushKey = "PallasBrush",
-            };
-            Growl.Info(growlInfo);
+            });
+            return;
         }
-        else
+
+        // 至少有一侧存在（两边都存在的情况已在上方 return），清理残余配置以便重新添加
+        if (existsInHelper)
         {
             ConfigurationHelper.DeleteConfiguration(NewConfigurationName);
+        }
+        if (existsInFactory)
+        {
             ConfigFactory.DeleteConfiguration(NewConfigurationName);
-            var growlInfo = new GrowlInfo {
+        }
+
+        // 两边都不存在，执行添加
+        bool helperAdded = ConfigurationHelper.AddConfiguration(NewConfigurationName, CurrentConfiguration);
+        bool factoryAdded = ConfigFactory.AddConfiguration(NewConfigurationName, CurrentConfiguration);
+
+        if (!helperAdded || !factoryAdded)
+        {
+            // 任一侧添加失败，回滚另一侧
+            if (helperAdded) { ConfigurationHelper.DeleteConfiguration(NewConfigurationName); }
+            if (factoryAdded) { ConfigFactory.DeleteConfiguration(NewConfigurationName); }
+
+            Growl.Info(new GrowlInfo {
                 IsCustom = true,
-                Message = string.Format(LocalizationHelper.GetString("ConfigExists"), NewConfigurationName),
+                Message = LocalizationHelper.GetStringFormat("ConfigExists", NewConfigurationName),
                 IconKey = "HangoverGeometry",
                 IconBrushKey = "PallasBrush",
-            };
-            Growl.Info(growlInfo);
+            });
+            return;
         }
+
+        ConfigurationList.Add(new CombinedData { Display = NewConfigurationName, Value = NewConfigurationName });
+
+        // 配置数量大于 1 时，标题栏显示配置名
+        UpdateWindowTitle();
+
+        Growl.Info(new GrowlInfo {
+            IsCustom = true,
+            Message = LocalizationHelper.GetStringFormat("AddConfigSuccess", NewConfigurationName),
+            IconKey = "HangoverGeometry",
+            IconBrushKey = "PallasBrush",
+        });
     }
 
     // UI 绑定的方法

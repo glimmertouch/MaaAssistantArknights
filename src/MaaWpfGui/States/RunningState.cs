@@ -16,23 +16,23 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using MaaWpfGui.Constants;
+using MaaWpfGui.Extensions;
 using MaaWpfGui.Helper;
 using MaaWpfGui.Utilities;
-using MaaWpfGui.ViewModels.UI;
 using Serilog;
 
 namespace MaaWpfGui.States;
 
 public class RunningState
 {
-    public class RunningStateChangedEventArgs(bool idle, bool inited, bool stopping) : EventArgs
+    public class RunningStateChangedEventArgs(StateSnapshot oldState, bool idle, bool inited, bool stopping) : EventArgs
     {
-        public bool Idle { get; } = idle;
+        public StateSnapshot OldState { get; } = oldState;
 
-        public bool Inited { get; } = inited;
-
-        public bool Stopping { get; } = stopping;
+        public StateSnapshot NewState { get; } = new(idle, inited, stopping);
     }
+
+    public record StateSnapshot(bool Idle, bool Inited, bool Stopping);
 
     private static RunningState? _instance;
     private static readonly ILogger _logger = Log.Logger.ForContext<RunningState>();
@@ -44,8 +44,9 @@ public class RunningState
             ReminderIntervalMinutes = 1;
         }
 
-        _timeoutReminderTimer.Interval = ReminderIntervalMinutes * 60 * 1000;
+        _timeoutReminderTimer.Interval = LongTaskTimeoutMinutes * 60 * 1000;
         _timeoutReminderTimer.Elapsed += TimeoutReminderTimer_Elapsed;
+        _stallTimer.Elapsed += StallTimer_Elapsed;
     }
 
     public static RunningState Instance
@@ -58,39 +59,100 @@ public class RunningState
 
     // 超时相关字段
     private readonly System.Timers.Timer _timeoutReminderTimer = new();
+    private readonly System.Timers.Timer _stallTimer = new();
+    private int _stallAccumulatedCount = 0;
+    private bool _stallIsFirstFire = true;
     private DateTime? _taskStartTime;
 
-    public int TaskTimeoutMinutes { get; set; } = SettingsViewModel.GameSettings.TaskTimeoutMinutes;
+    // 防止乘以 60000 毫秒时 int 溢出，int.MaxValue / 60000 ≈ 35791
+    private const int MaxMinutes = 11451;
+    private const int LongTaskTimeoutMinutes = 60;
 
-    private int _reminderIntervalMinutes = SettingsViewModel.GameSettings.ReminderIntervalMinutes;
+    private int _reminderIntervalMinutes = ConfigurationHelper.GetValue(ConfigurationKeys.ReminderIntervalMinutes, 30).Clamp(1, MaxMinutes);
 
     public int ReminderIntervalMinutes
     {
         get => _reminderIntervalMinutes;
         set {
-            if (value < 1)
-            {
-                return;
-            }
-
+            value = value.Clamp(1, MaxMinutes);
             _reminderIntervalMinutes = value;
             TimeoutReminderTimer_Elapsed(null, null);
             _timeoutReminderTimer.Interval = value * 60 * 1000;
         }
     }
 
-    // 超时事件
-    public event EventHandler<string>? TimeoutOccurred;
+    private int _stallTimeoutMinutes = ConfigurationHelper.GetValue(ConfigurationKeys.StallTimeoutMinutes, 25).Clamp(0, MaxMinutes);
 
+    public int StallTimeoutMinutes
+    {
+        get => _stallTimeoutMinutes;
+        set {
+            value = value.Clamp(0, MaxMinutes);
+            _stallTimeoutMinutes = value;
+            _stallIsFirstFire = true;
+            if (_stallTimer.Enabled)
+            {
+                _stallTimer.Stop();
+                if (value > 0)
+                {
+                    _stallTimer.Interval = value * 60 * 1000;
+                    _stallTimer.Start();
+                }
+            }
+        }
+    }
+
+    private bool _stallTimeoutEnabled = ConfigurationHelper.GetValue(ConfigurationKeys.StallTimeoutEnabled, true);
+
+    /// <summary>
+    /// Gets or sets a value indicating whether 启用停滞检测
+    /// </summary>
+    public bool StallTimeoutEnabled
+    {
+        get => _stallTimeoutEnabled;
+        set {
+            _stallTimeoutEnabled = value;
+            if (!value && _stallTimer.Enabled)
+            {
+                _stallTimer.Stop();
+            }
+        }
+    }
+
+    public event EventHandler<string>? StallOccurred;
+
+    public void NotifyOutputActivity()
+    {
+        _stallAccumulatedCount = 0;
+        _stallIsFirstFire = true;
+        if (_stallTimer.Enabled && StallTimeoutEnabled && StallTimeoutMinutes > 0)
+        {
+            _stallTimer.Interval = StallTimeoutMinutes * 60 * 1000;
+            _stallTimer.Stop();
+            _stallTimer.Start();
+        }
+    }
+
+    // 超时事件
     public void StartTimeoutTimer()
     {
         _taskStartTime = DateTime.Now;
         _timeoutReminderTimer.Start();
+        _stallAccumulatedCount = 0;
+        _stallIsFirstFire = true;
+        if (StallTimeoutEnabled && StallTimeoutMinutes > 0)
+        {
+            _stallTimer.Interval = StallTimeoutMinutes * 60 * 1000;
+            _stallTimer.Start();
+        }
     }
 
     public void StopTimeoutTimer()
     {
         _timeoutReminderTimer.Stop();
+        _stallTimer.Stop();
+        _stallAccumulatedCount = 0;
+        _stallIsFirstFire = true;
         _taskStartTime = null;
     }
 
@@ -108,27 +170,33 @@ public class RunningState
         }
 
         var elapsedMinutes = (DateTime.Now - _taskStartTime.Value).TotalMinutes;
-
         if (elapsedMinutes > 3 * 60)
         {
             AchievementTrackerHelper.Instance.Unlock(AchievementIds.ProxyOnline3Hours);
         }
+    }
 
-        // 如果任务运行时间未超过超时时间，则直接返回
-        if (elapsedMinutes <= TaskTimeoutMinutes)
-        {
-            return;
-        }
-
-        // 每隔 ReminderIntervalMinutes 提示一次
-        var message = string.Format(
-            LocalizationHelper.GetString("TaskTimeoutWarning"),
-            TaskTimeoutMinutes,
-            Math.Round(elapsedMinutes));
-
+    private void StallTimer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+    {
+        _stallTimer.Stop();
+        _stallAccumulatedCount++;
+        var accumulatedMinutes = StallTimeoutMinutes + ((_stallAccumulatedCount - 1) * ReminderIntervalMinutes);
+        var message = LocalizationHelper.GetStringFormat(
+            "TaskStallWarning",
+            StallTimeoutMinutes,
+            accumulatedMinutes);
+        StallOccurred?.Invoke(this, message);
         AchievementTrackerHelper.Instance.Unlock(AchievementIds.LongTaskTimeout);
+        if (StallTimeoutEnabled && StallTimeoutMinutes > 0)
+        {
+            if (_stallIsFirstFire)
+            {
+                _stallTimer.Interval = ReminderIntervalMinutes * 60 * 1000;
+                _stallIsFirstFire = false;
+            }
 
-        TimeoutOccurred?.Invoke(this, message);
+            _stallTimer.Start();
+        }
     }
 
     private bool _idle = true;
@@ -142,8 +210,8 @@ public class RunningState
                 return;
             }
 
+            var oldState = new StateSnapshot(_idle, _inited, _stopping);
             _idle = value;
-
             if (value)
             {
                 StopTimeoutTimer();
@@ -155,7 +223,7 @@ public class RunningState
                 SleepManagement.BlockSleep();
             }
 
-            RaiseStateChanged();
+            RaiseStateChanged(oldState);
         }
     }
 
@@ -175,8 +243,9 @@ public class RunningState
         set {
             if (_inited != value)
             {
+                var oldState = new StateSnapshot(_idle, _inited, _stopping);
                 _inited = value;
-                RaiseStateChanged();
+                RaiseStateChanged(oldState);
             }
         }
     }
@@ -197,8 +266,9 @@ public class RunningState
         set {
             if (_stopping != value)
             {
+                var oldState = new StateSnapshot(_idle, _inited, _stopping);
                 _stopping = value;
-                RaiseStateChanged();
+                RaiseStateChanged(oldState);
             }
         }
     }
@@ -213,9 +283,9 @@ public class RunningState
 
     public event EventHandler<RunningStateChangedEventArgs>? StateChanged;
 
-    private void RaiseStateChanged()
+    private void RaiseStateChanged(StateSnapshot oldState)
     {
-        StateChanged?.Invoke(this, new(_idle, _inited, _stopping));
+        StateChanged?.Invoke(this, new(oldState, _idle, _inited, _stopping));
     }
 
     /// <summary>

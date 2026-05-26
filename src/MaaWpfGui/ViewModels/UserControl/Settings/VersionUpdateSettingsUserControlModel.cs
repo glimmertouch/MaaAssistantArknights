@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Windows;
 using JetBrains.Annotations;
 using MaaWpfGui.Constants;
 using MaaWpfGui.Extensions;
@@ -69,7 +70,9 @@ public class VersionUpdateSettingsUserControlModel : PropertyChangedBase
     /// <summary>
     /// Gets the core version.
     /// </summary>
-    public static string CoreVersion { get; } = Marshal.PtrToStringAnsi(MaaService.AsstGetVersion()) ?? "0.0.1";
+    private static readonly string _coreVersion = Marshal.PtrToStringAnsi(MaaService.AsstGetVersion()) ?? "0.0.1";
+
+    public static string CoreVersion => FakeUpdateHelper.IsEnabled ? FakeUpdateHelper.CurrentVersion : _coreVersion;
 
     public static string CoreVersionDisplay => string.Join("\u200B", CoreVersion.ToCharArray());
 
@@ -78,7 +81,11 @@ public class VersionUpdateSettingsUserControlModel : PropertyChangedBase
     /// <summary>
     /// Gets the UI version.
     /// </summary>
-    public static string UiVersion { get; } = _uiVersion == "0.0.1" ? "DEBUG_VERSION" : _uiVersion;
+    public static string UiVersion => FakeUpdateHelper.IsEnabled
+        ? FakeUpdateHelper.CurrentVersion
+        : _uiVersion == "0.0.1"
+            ? "DEBUG_VERSION"
+            : _uiVersion;
 
     public static string UiVersionDisplay => string.Join("\u200B", UiVersion.ToCharArray());
 
@@ -352,7 +359,7 @@ public class VersionUpdateSettingsUserControlModel : PropertyChangedBase
         MirrorChyanCdkExpiredTime != 0
         ? IsMirrorChyanCdkExpired
             ? LocalizationHelper.GetString("MirrorChyanCdkExpired")
-            : string.Format(LocalizationHelper.GetString("MirrorChyanCdkRemainingDays"),
+            : LocalizationHelper.GetStringFormat("MirrorChyanCdkRemainingDays",
                             MirrorChyanCdkRemaining.TotalDays.ToString("F1"))
         : string.Empty;
 
@@ -392,8 +399,8 @@ public class VersionUpdateSettingsUserControlModel : PropertyChangedBase
     [UsedImplicitly]
     public void MirrorChyanCdkCopy()
     {
-        System.Windows.Forms.Clipboard.Clear();
-        System.Windows.Forms.Clipboard.SetDataObject(MirrorChyanCdk);
+        Clipboard.Clear();
+        Clipboard.SetDataObject(MirrorChyanCdk);
     }
 
     /// <summary>

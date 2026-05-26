@@ -118,7 +118,7 @@ B 服：`張三`，可輸入 `張三`、`張`、`三`
 關卡名稱。預設為空，將辨識 `目前/上次` 關卡。不支援在執行中更改設定。  
 目前支援導航的關卡包含：
 
-- **全部主線關卡**：可在關卡末尾新增 `-NORMAL` 或 `-HARD` 以切換標準或磨難難度。
+- **全部主線關卡**：可在關卡末尾新增 `-NORMAL` 或 `-HARD` 切換難度：10-14 章對應標準/磨難，15 章及以後對應常規/險地。
 - **資源收集**：
   - 龍門幣、作戰記錄： 支援第 5 / 6 關，但必須輸入 `CE-6` / `LS-6`。若第六關無法代理，MAA 會自動切換至第五關。
   - 技能書、採購憑證、碳本：支援第 5 關，必須輸入 `CA-5` / `AP-5` / `SK-5`。
@@ -910,32 +910,44 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 ::: field name="enable" type="boolean" optional default="true"  
 是否啟用本任務。  
 :::  
-::: field name="theme" type="string" optional default="Fire"  
+::: field name="theme" type="string" optional default="Tales"  
 主題。
 <br>
-`Fire` - _沙中之火_
+`Fire` - _沙中之火_（已關閉）
 <br>
-`Tales` - _沙洲遺聞_  
+`Tales` - _沙洲遺聞_
+<br>
+`RelaunchAnchor` - _重啟錨點_  
 :::  
 ::: field name="mode" type="number" optional default="0"  
-模式。
+模式。不同主題支援的模式不同：
 <br>
-`0`：刷分與建造點，進入戰鬥直接退出。
+**Tales（沙洲遺聞）：**
 <br>
-`1`：沙中之火 - 與聯絡員買水後，返回基地鍛造；沙洲遺聞 - 自動製造物品並透過讀檔刷取貨幣。  
+`0` - 無存檔，透過進出關卡刷生息點數。
+<br>
+`1` - 有存檔，透過組裝支援道具刷生息點數。
+<br>
+**RelaunchAnchor（重啟錨點）：**
+<br>
+`16` (`RA1`) - RA-1，自動執行精耕細作、建設、交付資源、結算循環。
+<br>
+`32` (`RA15`) - RA-15，用聖聆初雪完成 60 殺任務。
+<br>
+`48` (`RA4`) - RA-4，使用籌劃經營策略給予的赤金解鎖區域，使用維什戴爾完成擊殺 boss 任務。
 :::  
 ::: field name="tools_to_craft" type="array<string>" optional default="[&quot;荧光棒&quot;]"  
-自動製造的物品清單。建議填寫名稱關鍵字即可。  
+自動製造的物品清單。建議填寫名稱關鍵字即可。僅 Tales 主題有效。  
 :::  
 ::: field name="increment_mode" type="number" optional default="0"  
-點擊類型。
+點擊類型。僅 Tales 主題有效。
 <br>
 `0`：連點
 <br>
 `1`：長按  
 :::  
 ::: field name="num_craft_batches" type="number" optional default="16"  
-單次製造輪數上限。  
+單次製造輪數上限。僅 Tales 主題有效。  
 :::  
 ::::
 
@@ -1158,5 +1170,8 @@ bool ASSTAPI AsstSetInstanceOption(AsstHandle handle, AsstInstanceOptionKey key,
 :::  
 ::: field name="KillAdbOnExit" type="boolean" optional  
 退出時是否結束 ADB。可用值："0" 或 "1"。列舉值：5。  
+:::  
+::: field name="ClientType" type="string" optional  
+客戶端類型（遊戲渠道）。大多數連線設定不需要設定。僅當傳給 `AsstConnect` / `AsstAsyncConnect` 的 `config` 在連線階段命令中使用 `[PackageName]` 時，才需要在連線前呼叫 `AsstSetInstanceOption(..., ClientType, ...)`。目前內建設定中僅 `Androws` 與 `WSA` 的 `displayId` 查詢依賴該值。此選項不取代 StartUp / CloseDown 等任務參數中的 `client_type`。列舉值：6。  
 :::  
 ::::

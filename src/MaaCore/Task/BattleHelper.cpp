@@ -730,25 +730,28 @@ bool asst::BattleHelper::use_all_ready_skill(const cv::Mat& reusable)
             continue;
         }
 
+        if (auto interval = now - last_use_time; min_frame_interval > interval) {
+            LogInfo << name << "analyze skill too fast, interval time:"
+                    << std::chrono::duration_cast<std::chrono::milliseconds>(interval).count() << " ms";
+            continue;
+        }
+
         if (!is_skill_ready(loc, image)) {
             continue;
         }
 
         Log.info("Skill", name, "is ready");
 
-        if (auto interval = now - last_use_time; min_frame_interval > interval) {
-            LogInfo << name << "use skill too fast, interval time:"
-                    << std::chrono::duration_cast<std::chrono::milliseconds>(interval).count() << " ms";
-            continue;
-        }
-
         // 识别到了，但点进去发现没有。一般来说是识别错了
         if (!use_skill(loc, false)) {
             Log.warn("Skill", name, "is not ready");
-            constexpr int MaxRetry = 3;
-            if (++retry >= MaxRetry) {
-                Log.warn("Do not use skill anymore", name);
-                usage = SkillUsage::NotUse;
+            static const bool save_infinitely = std::filesystem::exists("DEBUG_skill_ready.txt");
+            if (!save_infinitely) {
+                constexpr int MaxRetry = 3;
+                if (++retry >= MaxRetry) {
+                    Log.warn("Do not use skill anymore", name);
+                    usage = SkillUsage::NotUse;
+                }
             }
             continue;
         }
@@ -1107,7 +1110,7 @@ void asst::BattleHelper::register_deployed_oper(const std::string& name, const P
 {
     m_used_tiles.emplace(loc, name);
     m_battlefield_opers.emplace(name, loc);
-    m_last_use_skill_time.emplace(loc, std::chrono::steady_clock::time_point());
+    m_last_use_skill_time.emplace(name, std::chrono::steady_clock::time_point());
 }
 
 void asst::BattleHelper::remove_cooling_from_battlefield(const battle::DeploymentOper& oper)

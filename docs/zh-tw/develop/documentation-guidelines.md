@@ -21,6 +21,8 @@ icon: jam:write-f
 
 該主題提供了關於提示、註釋、資訊、注意、警告和詳情自定義容器的支援，我們可以利用這一特性來強調部分內容。
 
+需要注意的是，如果容器中嵌套了容器，則父級容器應比子集容器多寫一個冒號 `:` 以進行區分，例如[步驟容器](#步驟)
+
 容器的使用方法：
 
 ```markdown
@@ -44,7 +46,7 @@ icon: jam:write-f
 - `warning` 注意
 - `danger` 警告
 - `details` 詳情
-- `demo-warpper` ==特殊容器==
+- `window` ==特殊容器==
 
 ### 容器範例
 
@@ -72,7 +74,7 @@ icon: jam:write-f
 這是詳情容器
 :::
 
-::: demo-wrapper
+::: window
 這是一個很特殊的容器
 :::
 
@@ -113,7 +115,7 @@ MaaAssistantArknights 是由 ==很多豬== 開發的
 
 有以下配置可以使用：
 
-::: demo-wrapper
+::: window
 輸入：
 
 ```markdown
@@ -135,8 +137,6 @@ MaaAssistantArknights 是由 ==很多豬== 開發的
 ## 步驟
 
 當您正在撰寫一個步驟化的教學時，有序列表可能會因為嵌套而失去層次感，這種時候 `steps` 容器就是最好的選擇。
-
-注意該容器用四個冒號來標記開始和結束，與常規的容器不同。
 
 輸入：
 
@@ -192,7 +192,7 @@ MaaAssistantArknights 是由 ==很多豬== 開發的
 
 您可以在 Markdown 正文中使用 `<ImageGrid>` 元件來呼叫該方法，具體的語法和效果如下：
 
-::: demo-wrapper
+::: window
 
 這是語法：
 
@@ -292,7 +292,7 @@ icon: jam:write-f
 - `color` 接受 CSS 風格的顏色值，如 `#fff`，`red` 等（該選項僅對 SVG 圖示有效）。
 - `size` 接受 CSS 風格的大小，如 `1rem`，`2em`，`100px` 等。
 
-::: demo-wrapper 範例
+::: window 範例
 
 輸入：
 

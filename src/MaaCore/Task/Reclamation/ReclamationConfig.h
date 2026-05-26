@@ -1,4 +1,6 @@
 #pragma once
+#include <variant>
+
 #include <meojson/json.hpp>
 
 namespace asst
@@ -6,15 +8,25 @@ namespace asst
 class ReclamationTheme
 {
 public:
-    static constexpr std::string_view Fire = "Fire";   // Fire Within the Sand
-    static constexpr std::string_view Tales = "Tales"; // Tales Within the Sand
+    static constexpr std::string_view Fire = "Fire";                     // Fire Within the Sand
+    static constexpr std::string_view Tales = "Tales";                   // Tales Within the Sand
+    static constexpr std::string_view RelaunchAnchor = "RelaunchAnchor"; // 重启锚点（RELAUNCH ANCHOR）
 };
 
-enum class ReclamationMode // 对应 Roguelike Mode
+enum class TalesMode
 {
-    ProsperityNoSave = 0,  // 0 - 无存档刷繁荣点数
-    ProsperityInSave = 1,  // 1 - 有存档刷繁荣点数
+    ProsperityNoSave = 0, // 0 - 无存档刷繁荣点数
+    ProsperityInSave = 1, // 1 - 有存档刷繁荣点数
 };
+
+enum class RelaunchAnchorMode
+{
+    RA1 = 1 << 4,  // 1 << 4 - RA-1
+    RA15 = 2 << 4, // 2 << 4 - RA-15
+    RA4 = 3 << 4,  // 3 << 4 - RA-4
+};
+
+using ReclamationMode = std::variant<TalesMode, RelaunchAnchorMode>;
 
 enum class ReclamationDifficulty // 对应 Roguelike Difficulty
 {
@@ -31,11 +43,9 @@ public:
 
     bool verify_and_load_params(const json::value& params);
 
-    static constexpr bool is_valid_theme(const std::string_view theme) { return theme == ReclamationTheme::Tales; }
-
-    static constexpr bool is_valid_mode(const ReclamationMode& mode, [[maybe_unused]] const std::string_view theme)
+    static constexpr bool is_valid_theme(const std::string_view theme)
     {
-        return mode == ReclamationMode::ProsperityNoSave || mode == ReclamationMode::ProsperityInSave;
+        return theme == ReclamationTheme::Tales || theme == ReclamationTheme::RelaunchAnchor;
     }
 
     static constexpr bool is_valid_difficulty(const ReclamationDifficulty& difficulty)
@@ -54,7 +64,7 @@ public:
 
 private:
     std::string m_theme = std::string(ReclamationTheme::Tales);            // 主题
-    ReclamationMode m_mode = ReclamationMode::ProsperityInSave;            // 策略
+    ReclamationMode m_mode = TalesMode::ProsperityInSave;                  // 策略
     ReclamationDifficulty m_difficulty = ReclamationDifficulty::Challenge; // 难度模式
 
     // 以下注释列出了插件专用参数, 以便于快速检阅。这些参数的具体声明与使用请参考各插件。

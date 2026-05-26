@@ -42,7 +42,7 @@
     <system:String x:Key="ExternalNotificationEnableDetails">输出详细信息</system:String>
     <system:String x:Key="ExternalNotificationSendWhenComplete">任务完成后发送通知</system:String>
     <system:String x:Key="ExternalNotificationSendWhenError">任务出错时发送通知</system:String>
-    <system:String x:Key="ExternalNotificationSendWhenTimeout">任务超时时发送通知</system:String>
+    <system:String x:Key="ExternalNotificationSendWhenStalled">任务日志输出停滞时发送通知</system:String>
     <system:String x:Key="ExternalNotificationSendSuccess">发送成功</system:String>
     <system:String x:Key="ExternalNotificationSendFail">发送失败</system:String>
     <system:String x:Key="ExternalNotificationSendTest">发送测试</system:String>
@@ -179,6 +179,7 @@
     <system:String x:Key="MuMuEmulator12">MuMu 模拟器</system:String>
     <system:String x:Key="AVD">Android 虚拟设备（AVD）</system:String>
     <system:String x:Key="LDPlayer">雷电模拟器</system:String>
+    <system:String x:Key="Androws">应用宝模拟器</system:String>
     <system:String x:Key="Nox">夜神模拟器</system:String>
     <system:String x:Key="XYAZ">逍遥模拟器</system:String>
     <system:String x:Key="WSA">WSA 旧版本</system:String>
@@ -252,7 +253,7 @@
     <system:String x:Key="IS5NewSquad6">花团锦簇分队</system:String>
     <system:String x:Key="IS5NewSquad7">棋行险着分队</system:String>
     <system:String x:Key="IS5NewSquad8">岁影回音分队</system:String>
-    <system:String x:Key="IS5NewSquad9">代理人分队</system:String>
+    <system:String x:Key="IS5NewSquad9">代理人分队（不支持）</system:String>
     <system:String x:Key="IS5NewSquad10">知学分队</system:String>
     <system:String x:Key="IS5NewSquad11">商贾分队</system:String>
     <system:String x:Key="SpecialForceSquad">特勤分队</system:String>
@@ -353,21 +354,21 @@
     <system:String x:Key="UpdateSource">更新源</system:String>
     <system:String x:Key="UpdateSourceTip" xml:space="preserve">
 🌏 使用{key=GlobalSource}：
-    ● {key=UpdateCheckNow}：由 MAA Team 提供更新检测，从 GitHub 拉取更新包，国内同步提供直连镜像（带宽有限，高峰期可能受限）
-    ● {key=ResourceUpdate}：由 {key=MirrorChyan} 提供免费的更新检测，可手动在设置中点击 ｢{key=ResourceUpdate}｣ 从 GitHub 下载
+    • {key=UpdateCheckNow}：由 MAA Team 提供更新检测，从 GitHub 拉取更新包，国内同步提供直连镜像（带宽有限，高峰期可能受限）
+    • {key=ResourceUpdate}：由 {key=MirrorChyan} 提供免费的更新检测，可手动在设置中点击 ｢{key=ResourceUpdate}｣ 从 GitHub 下载
 
 🔑 使用 {key=MirrorChyan}：
-    ● 填写 CDK 后，支持软件与资源的自动更新
-    ● 优先通过 {key=MirrorChyan} 高速 CDN 下载，更稳定快速
+    • 填写 CDK 后，支持软件与资源的自动更新
+    • 优先通过 {key=MirrorChyan} 高速 CDN 下载，更稳定快速
 
 📦 手动更新：
-    ● {key=UpdateCheckNow}：下载完整包或 OTA 更新包后拖入应用内，程序会自动解压并清理旧文件
-    ● {key=ResourceUpdate}：下载资源包后覆盖 resource 文件夹。资源为增量内容，请勿删除原文件夹，会资源损坏
+    • {key=UpdateCheckNow}：下载完整包或 OTA 更新包后拖入应用内，程序会自动解压并清理旧文件
+    • {key=ResourceUpdate}：下载资源包后覆盖 resource 文件夹。资源为增量内容，请勿删除原文件夹，会资源损坏
 
 📄 更新说明：
-    ● {key=UpdateCheckNow}：包含界面与功能更新。界面改动、新功能需通过{key=UpdateCheckNow}获得
-    ● {key=ResourceUpdate}：包含自动战斗新关卡、掉落识别图标、公招干员标签等素材数据
-    ● 导航热更：自动触发，用于更新主界面提示与活动关卡入口。成功后右上角会显示「{key=ApiUpdateSuccess}」
+    • {key=UpdateCheckNow}：包含界面与功能更新。界面改动、新功能需通过{key=UpdateCheckNow}获得
+    • {key=ResourceUpdate}：包含自动战斗新关卡、掉落识别图标、公招干员标签等素材数据
+    • 导航热更：自动触发，用于更新主界面提示与活动关卡入口。成功后右上角会显示「{key=ApiUpdateSuccess}」
 </system:String>
     <system:String x:Key="GlobalSource">海外源</system:String>
     <system:String x:Key="ForceGithubGlobalSource">强制使用 GitHub</system:String>
@@ -400,12 +401,33 @@
     <system:String x:Key="CheckNetworking">请检查网络连接或代理。</system:String>
     <system:String x:Key="GetReleaseNoteFailed">获取更新信息失败。</system:String>
     <system:String x:Key="NewVersionIsBeingBuilt">我知道你很急但你先别急.jpg</system:String>
-    <system:String x:Key="NewVersionNoOtaPackage">检测到新版本，但无可用的 OTA 增量更新包。将下载完整包，保留 config、data 与 debug 文件夹，其余文件将移至回收站及 .old。如有需要请手动备份</system:String>
+    <system:String x:Key="MirrorChyanBuildingOta">MirrorChyan 正在为此版本打包 OTA 增量更新包，将在 10 秒后自动重试</system:String>
+    <system:String x:Key="NewVersionNoOtaPackage">检测到新版本，但无可用的 OTA 增量更新包。将下载完整包，保留 cache、config、data、debug、achievement（通关截图）、background（背景图）和 MAA.Updater.exe，其余文件将移至回收站及 .old。如有需要请手动备份</system:String>
     <system:String x:Key="NewVersionDownloadPreparing">正在准备下载更新包……</system:String>
     <system:String x:Key="NewVersionDownloadFailedTitle">新版本下载失败</system:String>
     <system:String x:Key="NewVersionDownloadFailedDesc">请尝试手动下载后，将压缩包放到目录下_(:з」∠)_</system:String>
     <system:String x:Key="NewVersionDownloadCompletedTitle">新版本下载完成</system:String>
     <system:String x:Key="NewVersionDownloadCompletedDesc">是否立即更新 MAA？（重启进程）</system:String>
+    <system:String x:Key="PendingFullUpdateManualConfirmTitle">完整包更新需要手动确认</system:String>
+    <system:String x:Key="PendingFullUpdateManualConfirmDesc" xml:space="preserve">检测到需要使用完整包进行更新。
+
+更新逻辑：如果你继续下载或导入完整包，后续安装时会先清理当前安装根目录下除 cache、config、data、debug、achievement（通关截图）、background（背景图）和 MAA.Updater.exe 外的顶层文件和文件夹，再把完整包内容写入该目录。
+
+风险说明：如果你把 MAA 直接放在磁盘根目录、桌面、下载目录，或与其他程序、个人文件放在同一个目录层级，这些同级内容也可能被一起删除或移走。
+
+正确目录结构示例：请把 MAA 放在独立文件夹内，例如：
+D:\
+`-- MAA\
+    |-- MAA.exe
+    |-- config\
+    `-- data\
+
+请先手动备份整个安装目录，尤其是与 MAA 无关但和它放在同一层级的文件。
+当前安装目录：{0}
+
+只有在你已确认目录结构正确并完成手动备份后，才继续下载或导入完整包。</system:String>
+    <system:String x:Key="PendingFullUpdateManualConfirmYes">我已手动确认并备份，继续更新</system:String>
+    <system:String x:Key="PendingFullUpdateManualConfirmNo">暂不更新，继续启动当前版本</system:String>
     <system:String x:Key="LocalUpdatePackageImportedTitle">本地更新包已就绪</system:String>
     <system:String x:Key="LocalUpdatePackageImportedDesc">检测到可用的本地更新包，是否立即更新 MAA？（重启进程）</system:String>
     <system:String x:Key="LocalUpdatePackageUnsupported">无法识别压缩包：{0}\n仅支持拖入当前架构的完整包，或当前版本到更高版本的 OTA 更新包。\n当前版本：{1}\n当前架构：{2}\n支持的包名示例：MAA-v新版本-win-{2}.zip\n或 MAAComponent-OTA-{1}_v新版本-win-{2}.zip</system:String>
@@ -536,7 +558,7 @@
     <system:String x:Key="RoguelikeStartWithIdea">构想</system:String>
     <system:String x:Key="RoguelikeStartWithTicket">票券</system:String>
     <system:String x:Key="RefreshTraderWithDice">刷新商店（指路鳞）</system:String>
-    <system:String x:Key="PenguinId">企鹅物流汇报ID（仅数字部分）</system:String>
+    <system:String x:Key="PenguinId">企鹅物流汇报 ID（仅数字部分）</system:String>
     <system:String x:Key="EnablePenguin">上报企鹅物流</system:String>
     <system:String x:Key="EnableYituliu">上报一图流</system:String>
     <system:String x:Key="DrGrandet">博朗台模式</system:String>
@@ -602,9 +624,10 @@ HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Notifications\Settin
     <system:String x:Key="FightStageResetMode">过期关卡重置为</system:String>
     <system:String x:Key="HideSeries">隐藏代理倍率</system:String>
     <system:String x:Key="MainViewButtonFeature">主界面可选择按钮功能</system:String>
+    <system:String x:Key="StagePlanTip">将执行第一个开放的关卡, 如所有关卡均未开放则跳过当前任务\n当前执行: {0}</system:String>
     <system:String x:Key="CustomStageCode">手动输入关卡名</system:String>
-    <system:String x:Key="CustomStageCodeTip" xml:space="preserve">支持大部分主线关卡名与原列表的关卡名（如4-10、AP-5、H10-1-Hard）
-可在关卡结尾输入 ｢Normal/Hard｣ 表示需要切换标准与磨难难度
+    <system:String x:Key="CustomStageCodeTip" xml:space="preserve">支持大部分主线关卡名与原列表的关卡名（如 4-10、AP-5、H10-1-Hard）
+可在关卡结尾输入 ｢Normal/Hard｣ 切换难度：10-14 章对应标准/磨难，15 章及以后对应常规/险地
 可输入 ｢SSReopen-XX｣ 一次性代理 SS 复刻的普通关</system:String>
     <system:String x:Key="AutoDetectConnection">自动检测连接</system:String>
     <system:String x:Key="AutoDetectConnectionNotSupported">该连接配置不支持自动检测连接，请尝试手动填写端口号</system:String>
@@ -698,12 +721,19 @@ C:\\leidian\\LDPlayer9。\n
     <system:String x:Key="Roguelike">{key=AutoRoguelike}</system:String>
     <system:String x:Key="Reclamation">生息演算</system:String>
     <system:String x:Key="UserDataUpdate">更新数据</system:String>
-    <system:String x:Key="MiniGame">小游戏</system:String>
+    <system:String x:Key="MiniGame">牛杂</system:String>
+    <system:String x:Key="MiniGameCategoryPermanent">常驻活动</system:String>
+    <system:String x:Key="MiniGameCategoryCurrentEvent">当期活动</system:String>
     <system:String x:Key="Custom">自定任务</system:String>
     <system:String x:Key="SingleStep">单步任务</system:String>
     <system:String x:Key="ReclamationTheme">生息演算主题</system:String>
     <system:String x:Key="ReclamationThemeFire">沙中之火</system:String>
     <system:String x:Key="ReclamationThemeTales">沙洲遗闻</system:String>
+    <system:String x:Key="ReclamationThemeRelaunchAnchor">重启锚点</system:String>
+    <system:String x:Key="ReclamationMode">模式</system:String>
+    <system:String x:Key="ReclamationModeRA1">RA-1</system:String>
+    <system:String x:Key="ReclamationModeRA4">RA-4</system:String>
+    <system:String x:Key="ReclamationModeRA15">RA-15</system:String>
     <system:String x:Key="ReclamationModeProsperityNoSave">无存档，通过进出关卡刷生息点数</system:String>
     <system:String x:Key="ReclamationModeProsperityInSave">有存档，通过组装支援道具刷生息点数</system:String>
     <system:String x:Key="ReclamationIncrementMode">增加方式</system:String>
@@ -859,9 +889,14 @@ C:\\leidian\\LDPlayer9。\n
     <system:String x:Key="LastSyncTime">上次同步时间</system:String>
     <system:String x:Key="DepotRecognitionTip">该功能尚处于测试阶段，请检查结果是否准确再行使用。若有误，欢迎打包 debug/depot 文件夹后向我们提交 issue ~</system:String>
     <system:String x:Key="StartToDepotRecognition">开始识别</system:String>
-    <system:String x:Key="ExportToArkplanner">导出至企鹅物流刷图规划</system:String>
-    <system:String x:Key="ExportToLolicon">导出至明日方舟工具箱</system:String>
+    <system:String x:Key="ExportToArkplanner">企鹅物流刷图规划</system:String>
+    <system:String x:Key="ExportToLolicon">明日方舟工具箱</system:String>
+    <system:String x:Key="ExportToMarkdown">Markdown</system:String>
+    <system:String x:Key="ExportToCsv">CSV</system:String>
     <system:String x:Key="CopiedToClipboard">已复制到剪切板</system:String>
+    <system:String x:Key="ExportedToFile">已导出到文件</system:String>
+    <system:String x:Key="ExportTo">导出到：</system:String>
+    <system:String x:Key="Export">导出</system:String>
     <!--  !仓库识别  -->
     <!--  干员识别  -->
     <system:String x:Key="OperBoxRecognition">{key=Operator}识别</system:String>
@@ -871,6 +906,17 @@ C:\\leidian\\LDPlayer9。\n
     <system:String x:Key="OperBoxNotHaveList">未拥有: {0} 名</system:String>
     <system:String x:Key="StartToOperBoxRecognition">开始识别</system:String>
     <system:String x:Key="OperBoxCopyToClipboard">复制到剪切板</system:String>
+    <system:String x:Key="OperBoxExportToClipboard">剪切板</system:String>
+    <system:String x:Key="OperBoxExportToJson">JSON</system:String>
+    <system:String x:Key="OperBoxExportHeaderName">干员</system:String>
+    <system:String x:Key="OperBoxExportHeaderId">ID</system:String>
+    <system:String x:Key="OperBoxExportHeaderRarity">星级</system:String>
+    <system:String x:Key="OperBoxExportHeaderElite">精英化等级</system:String>
+    <system:String x:Key="OperBoxExportHeaderLevel">等级</system:String>
+    <system:String x:Key="OperBoxExportHeaderOwn">是否拥有</system:String>
+    <system:String x:Key="OperBoxExportHeaderPotential">潜能</system:String>
+    <system:String x:Key="OperBoxExportYes">是</system:String>
+    <system:String x:Key="OperBoxExportNo">否</system:String>
     <!--  !干员识别  -->
     <!--  视频识别  -->
     <system:String x:Key="VideoRecognition">视频识别</system:String>
@@ -1042,17 +1088,16 @@ C:\\leidian\\LDPlayer9。\n
         2. {key=MainStage}、{key=StoryCollection}、{key=SideStory}: 请在关卡界面的右下角存在 ｢开始行动｣ 按钮界面启动。\n\n
         3. {key=SSS}: resource/copilot 文件夹内置多份作业。请先手动编队，在右下角存在 ｢开始部署｣ 按钮界面启动，可配合 ｢{key=LoopTimes}｣。\n\n
         4. {key=ParadoxSimulation}: 选好技能后，在技能选择界面存在 ｢开始模拟｣ 按钮界面启动，1/2 星{key=Operator}（无技能）在右下角存在 ｢开始模拟｣ 按钮界面开始。若使用 ｢{key=UseCopilotList}｣，请从{key=Operator}列表 ｢等级/稀有度｣ 筛选下启动。\n\n
-        5. 使用好友助战时，请关闭 ｢{key=AutoSquad}｣ 和 ｢{key=UseCopilotList}｣，手动选择{key=Operator}后，在编队界面右下角存在 ｢开始行动｣ 按钮界面启动。\n\n
-        6. {key=Operator}若被标记为 ｢特别关注｣，可能影响 ｢{key=AutoSquad}｣ 的识别与选择。建议使用 ｢{key=AutoSquad}｣ 时移除关注，或在报错后关闭 ｢{key=AutoSquad}｣，根据提示手动补充缺失的{key=Operator}。\n\n
-        7. Copilot 作业站的神秘代码可通过输入框右侧的粘贴按钮粘贴：\n
-        ● 单击第 2 个按钮 = 添加作业。\n
-        ● 单击第 3 个按钮 = 添加作业集。\n\n
-        8. {key=UseCopilotList}:\n
-        ● 选择作业后，检查下方关卡名是否正确 (例: CV-EX-1)。\n
-        ● 添加: 左键 = 普通难度，右键 = 突袭难度。\n
-        ● 清除: 左键 = 全部清空，右键 = 仅移除未激活任务。\n
-        ● 请在能看到目标关卡名的界面启动，不支持跨章节导航。\n
-        ● 遇到理智不足、战斗失败、未能三星结算时将自动中止。
+        5. {key=Operator}若被标记为 ｢特别关注｣，可能影响 ｢{key=AutoSquad}｣ 的识别与选择。建议使用 ｢{key=AutoSquad}｣ 时移除关注，或在报错后关闭 ｢{key=AutoSquad}｣，根据提示手动补充缺失的{key=Operator}。\n\n
+        6. Copilot 作业站的神秘代码可通过输入框右侧的粘贴按钮粘贴：\n
+        • 单击第 2 个按钮 = 添加作业。\n
+        • 单击第 3 个按钮 = 添加作业集。\n\n
+        7. {key=UseCopilotList}:\n
+        • 选择作业后，检查下方关卡名是否正确 (例: CV-EX-1)。\n
+        • 添加: 左键 = 普通难度，右键 = 突袭难度。\n
+        • 清除: 左键 = 全部清空，右键 = 仅移除未激活任务。\n
+        • 请在能看到目标关卡名的界面启动，不支持跨章节导航。\n
+        • 遇到理智不足、战斗失败、未能三星结算时将自动中止。
     </system:String>
     <system:String x:Key="CopilotFileReadError">读取文件失败！</system:String>
     <system:String x:Key="CopilotNoFound">未找到对应作业！</system:String>
@@ -1099,6 +1144,7 @@ C:\\leidian\\LDPlayer9。\n
     <!--  !ErrorDialogView  -->
     <!--  AsstProxy  -->
     <system:String x:Key="UpdateApplyFailed">更新失败，当前安装可能已不完整。请重新下载完整包，并按下方说明手动迁移 config、data 与 debug。\n\n{key=FullPackageUpgradeTips}</system:String>
+    <system:String x:Key="UpdateApplyMissingUpdater">更新失败，缺少 MAA.Updater.exe，无法启动外部更新程序。本次更新已取消。该文件可能被手动删除，也可能被某些安全软件拦截或删除。若为安全软件导致，请前往对应软件的隔离区寻找并恢复该文件，并建议将 MAA 所在文件夹加入对应软件白名单后再试。\n\n{key=FullPackageUpgradeTips}</system:String>
     <system:String x:Key="ResourceBroken">资源损坏，请重新下载完整安装包。\n\n{key=FullPackageUpgradeTips}</system:String>
     <system:String x:Key="ReplaceAdbNotExists">ADB 路径不存在</system:String>
     <system:String x:Key="AdbDownloadFailedTitle">ADB 下载失败</system:String>
@@ -1138,6 +1184,7 @@ C:\\leidian\\LDPlayer9。\n
     <system:String x:Key="HasReturned">已返回</system:String>
     <system:String x:Key="DropRecognitionError">掉落识别错误</system:String>
     <system:String x:Key="GiveUpUploadingPenguins">放弃上传企鹅物流</system:String>
+    <system:String x:Key="ReportSkippedForPcClient">PC 端鼠标为独立渲染，可能遮挡掉落物及数量识别。为避免错误数据污染数据池，已自动跳过本次上报</system:String>
     <system:String x:Key="TheEx">无奖励关卡，已停止</system:String>
     <system:String x:Key="MissingOperators">缺少以下{key=Operator}组中的{key=Operator}：</system:String>
     <system:String x:Key="RecruitSupportOperator">编入助战{key=Operator}：{0}</system:String>
@@ -1151,7 +1198,7 @@ C:\\leidian\\LDPlayer9。\n
     <system:String x:Key="MedicineUsedTimesWithExpiring" xml:space="preserve">药: {0},{1}(临期)  </system:String>
     <system:String x:Key="StoneUsedTimes" xml:space="preserve">石: {0}  </system:String>
     <system:String x:Key="MedicineUsed">已使用理智药</system:String>
-    <system:String x:Key="ExpiringMedicineUsed">已使用 {0} 天内过期的理智药</system:String>
+    <system:String x:Key="ExpiringMedicineUsed">已使用 {0} H内过期理智药</system:String>
     <system:String x:Key="StoneUsed">已使用源石</system:String>
     <system:String x:Key="ActingCommandError">代理指挥失误</system:String>
     <system:String x:Key="FightMissionFailedAndStop">代理失败次数已达上限，任务已停止</system:String>
@@ -1218,6 +1265,7 @@ C:\\leidian\\LDPlayer9。\n
     <system:String x:Key="ProductIncorrect">产物与配置不相符。</system:String>
     <system:String x:Key="ProductUnknown">无法识别的产物</system:String>
     <system:String x:Key="ProductChanged">产物已切换</system:String>
+    <system:String x:Key="ProductChangeFail">产物切换失败</system:String>
     <system:String x:Key="RecruitingResults" xml:space="preserve">公招识别结果: </system:String>
     <system:String x:Key="RecruitingTips">公招提示</system:String>
     <system:String x:Key="RecruitmentOfStar">公招出 {0} 星了哦！</system:String>
@@ -1280,11 +1328,10 @@ C:\\leidian\\LDPlayer9。\n
     <system:String x:Key="RestartAsAdminFailed">请手动以管理员身份运行 MAA</system:String>
     <system:String x:Key="AttachWindowFailed">AttachWindow 绑定窗口失败，请检查截图/输入方式配置</system:String>
     <system:String x:Key="UseAttachWindowTip">使用 Win32 窗口绑定明日方舟 PC 端，而非 ADB 连接模拟器或手机</system:String>
-    <system:String x:Key="UseAttachWindowWarning" xml:space="preserve">连接 PC 端（实验性功能，稳定性无法保证）
-由于 MAA Team 开发人手有限，PC 端功能长期缺乏专人维护，可能存在功能异常或运行不稳定等问题：
-● 遇到问题时，我们可能无法及时响应或修复
-● 若无法正常使用，建议切换至 ADB 模式连接 Android 模拟器或移动设备
-● 诚挚欢迎有开发能力的用户提交 Pull Request，共同完善 PC 端支持
+    <system:String x:Key="UseAttachWindowWarning" xml:space="preserve">连接 PC 端（实验性）
+由于 MAA Team 开发人手有限，此功能由社区维护，非 MAA Team 持续支持，功能和稳定性可能不尽如人意，遇到问题时也可能无法第一时间修复。
+如遇到影响使用的问题，建议改用 ADB 连接 Android 模拟器或移动设备，获得更稳定的体验。
+我们也始终欢迎有能力的开发者参与贡献提交 Pull Request，共同完善 PC 端支持。
 
 使用前请确认：
 1. 需要以管理员身份启动 MAA
@@ -1433,7 +1480,54 @@ DEBUG 目录下保存的图片有数量限制，超出后会自动清理旧图�
     <system:String x:Key="AnnouncementNotFinishedConfirm3">还点</system:String>
     <!--  !Announcement  -->
     <!--  Reclamation  -->
-    <system:String x:Key="ReclamationEarlyTip" xml:space="preserve">
+    <system:String x:Key="ReclamationTipRelaunchAnchorRA1" xml:space="preserve">
+收益参考：每把约 159 代币 + 统筹点数，单轮耗时约 2 分 10 秒
+
+干员要求：无
+
+前置步骤：推进主线至 RA-1 已通关状态
+
+在大地图打开 RA-1，右下角出现“开启建设”时启动任务，即可自动循环
+
+注意：如果已解锁开局额外携带物品的相关科技，请将基地内会导致开局额外携带物品的设施拆除，如食品供给站、饮品供给站、兽栏等
+
+任务流程：自动执行精耕细作、建设、交付资源、结算循环
+    </system:String>
+    <system:String x:Key="ReclamationTipRelaunchAnchorRA4" xml:space="preserve">
+收益参考：每把约 417 代币 + 统筹点数，单轮耗时约 1 分 40 秒
+
+干员要求：维什戴尔（可以借助战）
+
+前置步骤：
+1. 推进主线至 RA-4 已通关状态
+2. 解锁策略筹划经营
+3. 如果自己有维什戴尔，请手动打开关卡并配队一次，保证为任意 5 个费用比维什戴尔低的干员+ 维什戴尔，且维什戴尔位于六号位即最后一个选的人，然后确认招募，放弃本次建设并在开始建设处开始
+4. 如果使用助战维什戴尔，请保证维什戴尔在狙击助战首页（考虑挚友），请手动打开关卡编入任意 5 个费用比维什戴尔低的干员，六号位选择维什戴尔助战后确认招募，放弃本次建设并在开始建设处开始（保证队伍前五位有人且六号位为空）
+
+在大地图打开 RA-4，右下角出现“开启建设”时启动任务，即可自动循环
+
+注意：如果已解锁开局额外携带物品的相关科技，请将基地内会导致开局额外携带物品的设施拆除，如食品供给站、饮品供给站、兽栏等
+
+任务流程：使用筹划经营策略给予的赤金解锁区域，使用维什戴尔完成击杀 boss 任务
+    </system:String>
+    <system:String x:Key="ReclamationTipRelaunchAnchorRA15" xml:space="preserve">
+收益参考：每把约 500 代币 + 统筹点数，单轮耗时约 3 分钟
+
+干员要求：圣聆初雪（可以借助战）
+
+前置步骤：
+1. 推进主线至 RA-15 已通关状态
+2. 如果自己有圣聆初雪，请手动打开关卡并配队一次，保证为五先锋（无练度要求）+ 初雪，且初雪位于六号位即最后一个选的人，然后保存配队并退出关卡
+3. 如果使用助战圣聆初雪，请保证圣聆初雪在术士助战首页（考虑挚友）
+
+在大地图打开 RA-15，右下角出现“开启建设”时启动任务，即可自动循环
+
+注意：如果已解锁开局额外携带物品的相关科技，请将基地内会导致开局额外携带物品的设施拆除，如食品供给站、饮品供给站、兽栏等
+
+任务流程：用圣聆初雪完成 60 杀任务
+    </system:String>
+    <system:String x:Key="ReclamationTipFire">该活动已关闭，无法使用</system:String>
+    <system:String x:Key="ReclamationTipTales" xml:space="preserve">
 目前生息演算的支持仍处于中期阶段，使用时请注意以下几点：
 
  通过开局刷点数：(小心已有存档被删除)
@@ -1469,15 +1563,22 @@ DEBUG 目录下保存的图片有数量限制，超出后会自动清理旧图�
 如需多开 MAA，请复制一份新的 MAA 到其他文件夹下，并设置使用不同的 MAA，相同的 adb 和不同的模拟器地址进行多开操作。
     </system:String>
     <system:String x:Key="SoftwareLocationWarning">当前软件所在的位置无法保存数据，可能会导致设置丢失或运行异常。建议将软件移动到可写目录中运行，请勿放置在系统保护目录（如 Program Files、System32 或 Windows 目录）中。</system:String>
-    <system:String x:Key="RunningInTempDirectoryError">MAA 无法在压缩包或系统临时目录中运行。请将 MAA 从压缩包中完整解压，或将 MAA 移动到常规文件夹中再运行。</system:String>
+    <system:String x:Key="UnsupportedInstallLocationError" xml:space="preserve">MAA 不能直接在当前安装位置运行，例如临时目录、盘符根目录，或系统/用户共享目录。
+
+当前安装目录：{0}
+命中的不支持位置：{1}
+
+这些位置层级过高，容易引发文件覆盖、配置写入异常或数据混乱。请先将 MAA 移动到独立文件夹中，例如 D:\\MAA\\，再重新启动。</system:String>
     <!--  !Boot  -->
     <!--  SimpleEncryptionHelper  -->
     <system:String x:Key="EncryptionError">加解密失败，请重新配置相关设置，否则加密内容将以明文形式存储在配置文件中。</system:String>
     <!--  !SimpleEncryptionHelper  -->
     <!--  TimeOutTimer  -->
-    <system:String x:Key="TaskTimeoutMinutes">任务超时时间（分钟）</system:String>
-    <system:String x:Key="ReminderIntervalMinutes">提醒间隔时间（分钟）</system:String>
-    <system:String x:Key="TaskTimeoutWarning">任务已运行超过 {0} 分钟（当前已运行 {1} 分钟）。如果长时间无进一步日志更新，可能需要手动干预。</system:String>
+    <!-- <system:String x:Key="TaskTimeoutMinutes">任务超时时间（分钟）</system:String> -->
+    <system:String x:Key="ReminderIntervalMinutes">通知间隔时间（分钟）</system:String>
+    <system:String x:Key="StallTimeoutMinutes">日志输出停滞超时时间（分钟）</system:String>
+    <system:String x:Key="StallTimeoutEnabled">启用停滞检测</system:String>
+    <system:String x:Key="TaskStallWarning">任务日志输出已超过 {0} 分钟无更新（当前已停滞 {1} 分钟）。如果长时间无进一步日志输出，可能需要手动干预。</system:String>
     <!--  !TimeOutTimer  -->
     <!--  Achievement  -->
     <system:String x:Key="AchievementCelebrate">🎉 达成成就</system:String>
@@ -1542,6 +1643,9 @@ DEBUG 目录下保存的图片有数量限制，超出后会自动清理旧图�
     <system:String x:Key="Achievement.Martian.Description">远古版本好用吗？</system:String>
     <system:String x:Key="Achievement.Martian.Conditions">资源时间或版本时间距今超过 3 个月</system:String>
     <system:String x:Key="Achievement.Martian.ConditionsTip">资源时间或版本时间距今超过 {0} 个月</system:String>
+
+    <system:String x:Key="ConfigurationRecoveredNotification">目标配置 "{0}" 缺失，已从当前配置复制，建议检查所有配置</system:String>
+    <system:String x:Key="ConfigurationBrokenCaption">配置异常</system:String>
 
     <system:String x:Key="Achievement.AnnouncementStubbornClick.Title">死不悔改</system:String>
     <system:String x:Key="Achievement.AnnouncementStubbornClick.Description">即使提示了这么多次，你依然选择不看公告。</system:String>

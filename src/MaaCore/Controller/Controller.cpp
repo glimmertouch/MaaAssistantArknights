@@ -28,6 +28,10 @@
 #include "Win32Controller.h"
 #endif
 
+#ifdef __ANDROID__
+#include "MaaFwAndroidNativeController.h"
+#endif
+
 #include "Common/AsstTypes.h"
 #include "Utils/Logger.hpp"
 
@@ -43,31 +47,26 @@ asst::Controller::~Controller()
     LogTraceFunction;
 }
 
-std::shared_ptr<asst::ControllerAPI> asst::Controller::create_controller(
-    ControllerType type,
-    const std::string& adb_path,
-    const std::string& address,
-    const std::string& config,
-    PlatformType platform_type) const
+std::shared_ptr<asst::ControllerAPI>
+    asst::Controller::create_controller(ControllerType type, PlatformType platform_type) const
 {
-    std::shared_ptr<ControllerAPI> controller;
     try {
         switch (type) {
         case ControllerType::Adb:
-            controller = std::make_shared<AdbController>(m_callback, m_inst, platform_type);
-            break;
+            return std::make_shared<AdbController>(m_callback, m_inst, platform_type);
         case ControllerType::Minitouch:
-            controller = std::make_shared<MinitouchController>(m_callback, m_inst, platform_type);
-            break;
+            return std::make_shared<MinitouchController>(m_callback, m_inst, platform_type);
         case ControllerType::Maatouch:
-            controller = std::make_shared<MaatouchController>(m_callback, m_inst, platform_type);
-            break;
+            return std::make_shared<MaatouchController>(m_callback, m_inst, platform_type);
         case ControllerType::MacPlayTools:
-            controller = std::make_shared<PlayToolsController>(m_callback, m_inst, platform_type);
-            break;
+            return std::make_shared<PlayToolsController>(m_callback, m_inst, platform_type);
         case ControllerType::MaaFwAdb:
-            controller = std::make_shared<MaaFwAdbController>(m_callback, m_inst, platform_type);
-            break;
+            return std::make_shared<MaaFwAdbController>(m_callback, m_inst, platform_type);
+#ifdef __ANDROID__
+        case ControllerType::MaaFwAndroidNative:
+            Log.debug("Use Android");
+            return std::make_shared<MaaFwAndroidNativeController>(m_callback, m_inst);
+#endif
         default:
             return nullptr;
         }
@@ -76,10 +75,6 @@ std::shared_ptr<asst::ControllerAPI> asst::Controller::create_controller(
         Log.error("Unable to create controller: {}", e.what());
         return nullptr;
     }
-    if (controller->connect(adb_path, address, config)) {
-        return controller;
-    }
-    return nullptr;
 }
 
 size_t asst::Controller::get_pipe_data_size() const noexcept
@@ -136,13 +131,14 @@ void asst::Controller::sync_params()
 
 bool asst::Controller::back_to_home()
 {
+    CHECK_EXIST(m_controller, false);
     m_controller->back_to_home();
     return true;
 }
 
 cv::Mat asst::Controller::get_resized_image_cache() const
 {
-    const static cv::Size d_size(m_scale_size.first, m_scale_size.second);
+    const cv::Size d_size(m_scale_size.first, m_scale_size.second);
 
     std::shared_lock<std::shared_mutex> image_lock(m_image_mutex);
     if (m_cache_image.empty()) {
@@ -238,13 +234,19 @@ bool asst::Controller::connect(const std::string& adb_path, const std::string& a
 
     clear_info();
 
-    m_controller = create_controller(m_controller_type, adb_path, address, config, m_platform_type);
+    m_controller = create_controller(m_controller_type, m_platform_type);
     if (!m_controller) {
         Log.error("connect failed");
         return false;
     }
 
     sync_params();
+
+    if (!m_controller->connect(adb_path, address, config)) {
+        Log.error("connect failed");
+        m_controller = nullptr;
+        return false;
+    }
 
     m_uuid = m_controller->get_uuid();
 
@@ -254,11 +256,14 @@ bool asst::Controller::connect(const std::string& adb_path, const std::string& a
     }
 #endif
 
+    // Android uses lazy loading; no need to check in advance
+#ifndef __ANDROID__
     // try to find the fastest way
     if (!screencap()) {
         Log.error("Cannot find a proper way to screencap!");
         return false;
     }
+#endif
 
     auto proxy_callback = [&](const json::object& details) {
         json::value connection_info = json::object {
@@ -375,6 +380,11 @@ void asst::Controller::set_touch_mode(const TouchMode& mode) noexcept
     case TouchMode::MaaFwAdb:
         m_controller_type = ControllerType::MaaFwAdb;
         break;
+#ifdef __ANDROID__
+    case TouchMode::Android:
+        m_controller_type = ControllerType::MaaFwAndroidNative;
+        break;
+#endif
     default:
         m_controller_type = ControllerType::Minitouch;
     }
@@ -395,6 +405,16 @@ void asst::Controller::set_kill_adb_on_exit(bool enable) noexcept
 {
     m_kill_adb_on_exit = enable;
     sync_params();
+}
+
+void asst::Controller::set_client_type(const std::string& client_type) noexcept
+{
+    m_client_type = client_type;
+}
+
+const std::string& asst::Controller::get_client_type() const noexcept
+{
+    return m_client_type;
 }
 
 const std::string& asst::Controller::get_uuid() const
@@ -434,7 +454,7 @@ cv::Mat asst::Controller::get_image(bool raw)
         };
         callback(AsstMsg::ConnectionInfo, info);
 
-        const static cv::Size d_size(m_scale_size.first, m_scale_size.second);
+        const cv::Size d_size(m_scale_size.first, m_scale_size.second);
         m_cache_image = cv::Mat(d_size, CV_8UC3);
 
         break;

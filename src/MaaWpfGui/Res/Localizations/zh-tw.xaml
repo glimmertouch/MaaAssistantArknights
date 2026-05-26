@@ -42,7 +42,7 @@
     <system:String x:Key="ExternalNotificationEnableDetails">輸出詳細資訊</system:String>
     <system:String x:Key="ExternalNotificationSendWhenComplete">任務完成後發送通知</system:String>
     <system:String x:Key="ExternalNotificationSendWhenError">任務出錯時發送通知</system:String>
-    <system:String x:Key="ExternalNotificationSendWhenTimeout">任務逾時時發送通知</system:String>
+    <system:String x:Key="ExternalNotificationSendWhenStalled">任務日誌輸出停滯時發送通知</system:String>
     <system:String x:Key="ExternalNotificationSendSuccess">發送成功</system:String>
     <system:String x:Key="ExternalNotificationSendFail">發送失敗</system:String>
     <system:String x:Key="ExternalNotificationSendTest">發送測試</system:String>
@@ -179,6 +179,7 @@
     <system:String x:Key="MuMuEmulator12">MuMu 模擬器 12</system:String>
     <system:String x:Key="LDPlayer">雷電模擬器</system:String>
     <system:String x:Key="AVD">Android 虛擬裝置（AVD）</system:String>
+    <system:String x:Key="Androws">應用寶模擬器</system:String>
     <system:String x:Key="Nox">夜神模擬器</system:String>
     <system:String x:Key="XYAZ">逍遙模擬器</system:String>
     <system:String x:Key="WSA">WSA 舊版本</system:String>
@@ -249,10 +250,10 @@
     <system:String x:Key="IS5NewSquad3">遊客分隊</system:String>
     <system:String x:Key="IS5NewSquad4">司歲台分隊</system:String>
     <system:String x:Key="IS5NewSquad5">天師府分隊</system:String>
-    <system:String x:Key="IS5NewSquad6">花團錦簇分隊（待 DLC I 開放）</system:String>
-    <system:String x:Key="IS5NewSquad7">棋行險著分隊（待 DLC I 開放）</system:String>
-    <system:String x:Key="IS5NewSquad8">歲影回音分隊（待 DLC I 開放）</system:String>
-    <system:String x:Key="IS5NewSquad9">代理人分隊（待 DLC II 開放）</system:String>
+    <system:String x:Key="IS5NewSquad6">花團錦簇分隊</system:String>
+    <system:String x:Key="IS5NewSquad7">棋行險著分隊</system:String>
+    <system:String x:Key="IS5NewSquad8">歲影回音分隊</system:String>
+    <system:String x:Key="IS5NewSquad9">代理人分隊（不支持）</system:String>
     <system:String x:Key="IS5NewSquad10">知學分隊（待 DLC II 開放）</system:String>
     <system:String x:Key="IS5NewSquad11">商賈分隊（待 DLC II 開放）</system:String>
     <system:String x:Key="SpecialForceSquad">特勤分隊</system:String>
@@ -353,21 +354,21 @@
     <system:String x:Key="UpdateSource">更新來源</system:String>
     <system:String x:Key="UpdateSourceTip" xml:space="preserve">
 🌏 使用 {key=GlobalSource}：
-    ● {key=UpdateCheckNow}：由 MAA Team 提供更新偵測，從 GitHub 下載更新壓縮檔案，中國國內同步提供直連鏡像站（頻寬有限，高峰時段可能受限）
-    ● {key=ResourceUpdate}：由 {key=MirrorChyan} 提供免費的更新偵測，可手動在設定中點擊「{key=ResourceUpdate}」從 GitHub 下載
+    • {key=UpdateCheckNow}：由 MAA Team 提供更新偵測，從 GitHub 下載更新壓縮檔案，中國國內同步提供直連鏡像站（頻寬有限，高峰時段可能受限）
+    • {key=ResourceUpdate}：由 {key=MirrorChyan} 提供免費的更新偵測，可手動在設定中點擊「{key=ResourceUpdate}」從 GitHub 下載
 
 🔑 使用 {key=MirrorChyan}：
-    ● 填寫 CDK 後，支援軟體與資源的自動更新
-    ● 優先透過 {key=MirrorChyan} 高速 CDN 下載，更穩定快速
+    • 填寫 CDK 後，支援軟體與資源的自動更新
+    • 優先透過 {key=MirrorChyan} 高速 CDN 下載，更穩定快速
 
 📦 手動更新：
-    ● {key=UpdateCheckNow}：下載完整檔案或 OTA 更新檔後拖入應用程式，程式會自動解壓縮並清理舊檔案
-    ● {key=ResourceUpdate}：下載資源檔案後覆蓋 resource 資料夾。資源為增量內容，請勿刪除原資料夾，否則會資源損壞
+    • {key=UpdateCheckNow}：下載完整檔案或 OTA 更新檔後拖入應用程式，程式會自動解壓縮並清理舊檔案
+    • {key=ResourceUpdate}：下載資源檔案後覆蓋 resource 資料夾。資源為增量內容，請勿刪除原資料夾，否則會資源損壞
 
 📄 更新說明：
-    ● {key=UpdateCheckNow}：包含介面與功能更新。介面改動、新功能需透過 {key=UpdateCheckNow} 取得
-    ● {key=ResourceUpdate}：包含自動作戰新關卡、掉落辨識圖示、公招幹員標籤等素材資料
-    ● 導航熱更新：自動觸發，用於更新主介面提示與活動關卡入口。成功後右上角會顯示「{key=ApiUpdateSuccess}」
+    • {key=UpdateCheckNow}：包含介面與功能更新。介面改動、新功能需透過 {key=UpdateCheckNow} 取得
+    • {key=ResourceUpdate}：包含自動作戰新關卡、掉落辨識圖示、公招幹員標籤等素材資料
+    • 導航熱更新：自動觸發，用於更新主介面提示與活動關卡入口。成功後右上角會顯示「{key=ApiUpdateSuccess}」
 </system:String>
     <system:String x:Key="GlobalSource">全域來源</system:String>
     <system:String x:Key="ForceGithubGlobalSource">強制使用 GitHub</system:String>
@@ -400,12 +401,33 @@
     <system:String x:Key="CheckNetworking">請檢查網路連線或 Proxy 代理設定。</system:String>
     <system:String x:Key="GetReleaseNoteFailed">取得更新資訊失敗。</system:String>
     <system:String x:Key="NewVersionIsBeingBuilt">我知道你很急但你先別急.jpg</system:String>
-    <system:String x:Key="NewVersionNoOtaPackage">偵測到新版本，但無可用的 OTA 增量更新檔案。將下載完整安裝檔案，保留 config、data 與 debug 資料夾，其餘檔案將移至資源回收桶及 .old，如有需要請手動備份</system:String>
+    <system:String x:Key="MirrorChyanBuildingOta">MirrorChyan 正在為此版本打包 OTA 增量更新檔，將在 10 秒後自動重試</system:String>
+    <system:String x:Key="NewVersionNoOtaPackage">偵測到新版本，但無可用的 OTA 增量更新檔案。將下載完整安裝檔案，保留 cache、config、data、debug、achievement（通關截圖）、background（背景圖片）和 MAA.Updater.exe，其餘檔案將移至資源回收桶及 .old，如有需要請手動備份</system:String>
     <system:String x:Key="NewVersionDownloadPreparing">正在準備下載更新檔……</system:String>
     <system:String x:Key="NewVersionDownloadFailedTitle">新版本下載失敗</system:String>
     <system:String x:Key="NewVersionDownloadFailedDesc">請嘗試手動下載後，將壓縮檔放到目錄下 _(:з」∠)_</system:String>
     <system:String x:Key="NewVersionDownloadCompletedTitle">新版本下載完成</system:String>
     <system:String x:Key="NewVersionDownloadCompletedDesc">是否立即更新 MAA？（將重啟程式）</system:String>
+    <system:String x:Key="PendingFullUpdateManualConfirmTitle">完整包更新需要手動確認</system:String>
+    <system:String x:Key="PendingFullUpdateManualConfirmDesc" xml:space="preserve">偵測到需要使用完整包進行更新。
+
+更新邏輯：如果你繼續下載或匯入完整包，後續安裝時會先清理目前安裝根目錄下除 cache、config、data、debug、achievement（通關截圖）、background（背景圖片）和 MAA.Updater.exe 外的頂層檔案與資料夾，再把完整包內容寫入該目錄。
+
+風險說明：如果你把 MAA 直接放在磁碟根目錄、桌面、下載資料夾，或與其他程式、個人檔案放在同一個目錄層級，這些同層內容也可能一起被刪除或移走。
+
+正確目錄結構示例：請把 MAA 放在獨立資料夾內，例如：
+D:\
+`-- MAA\
+    |-- MAA.exe
+    |-- config\
+    `-- data\
+
+請先手動備份整個安裝目錄，尤其是與 MAA 無關但和它放在同一層級的檔案。
+目前安裝目錄：{0}
+
+只有在你已確認目錄結構正確並完成手動備份後，才繼續下載或匯入完整包。</system:String>
+    <system:String x:Key="PendingFullUpdateManualConfirmYes">我已手動確認並備份，繼續更新</system:String>
+    <system:String x:Key="PendingFullUpdateManualConfirmNo">暫不更新，繼續啟動目前版本</system:String>
     <system:String x:Key="LocalUpdatePackageImportedTitle">本機更新包已就緒</system:String>
     <system:String x:Key="LocalUpdatePackageImportedDesc">偵測到可用的本機更新包，是否立即更新 MAA？（將重啟程式）</system:String>
     <system:String x:Key="LocalUpdatePackageUnsupported">無法識別壓縮檔：{0}\n僅支援拖入目前架構的完整包，或目前版本到更高版本的 OTA 更新包。\n目前版本：{1}\n目前架構：{2}\n支援的包名範例：MAA-v新版本-win-{2}.zip\n或 MAAComponent-OTA-{1}_v新版本-win-{2}.zip</system:String>
@@ -602,9 +624,10 @@ HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Notifications\Settin
     <system:String x:Key="FightStageResetMode">過期關卡重設為</system:String>
     <system:String x:Key="HideSeries">隱藏代理倍率</system:String>
     <system:String x:Key="MainViewButtonFeature">主介面可選擇按鈕功能</system:String>
+    <system:String x:Key="StagePlanTip">將執行第一個開放的關卡, 如所有關卡均未開放則跳過當前任務\n當前執行: {0}</system:String>
     <system:String x:Key="CustomStageCode">手動輸入關卡名稱</system:String>
     <system:String x:Key="CustomStageCodeTip" xml:space="preserve">支援大部分主線關卡名稱與原清單的關卡名稱（如 4-10、AP-5、H10-1-Hard）
-可在關卡結尾輸入 ｢Normal/Hard｣ 表示需要切換標準與磨難難度
+可在關卡結尾輸入 ｢Normal/Hard｣ 切換難度：10-14 章對應標準/磨難，15 章及以後對應常規/險地
 可輸入 ｢SSReopen-XX｣ 一次性代理 SS 複刻的普通關</system:String>
     <system:String x:Key="AutoDetectConnection">自動偵測連線</system:String>
     <system:String x:Key="AutoDetectConnectionNotSupported">該連線配置不支援自動偵測連線，請嘗試手動填寫通訊埠編號</system:String>
@@ -698,12 +721,19 @@ C:\\leidian\\LDPlayer9\n
     <system:String x:Key="Roguelike">{key=AutoRoguelike}</system:String>
     <system:String x:Key="Reclamation">生息演算</system:String>
     <system:String x:Key="UserDataUpdate">更新使用者資料</system:String>
-    <system:String x:Key="MiniGame">小遊戲</system:String>
+    <system:String x:Key="MiniGame">快捷功能</system:String>
+    <system:String x:Key="MiniGameCategoryPermanent">常駐</system:String>
+    <system:String x:Key="MiniGameCategoryCurrentEvent">目前活動</system:String>
     <system:String x:Key="Custom">自定義任務</system:String>
     <system:String x:Key="SingleStep">單步任務</system:String>
     <system:String x:Key="ReclamationTheme">生息演算主題</system:String>
     <system:String x:Key="ReclamationThemeFire">沙中之火</system:String>
     <system:String x:Key="ReclamationThemeTales">沙洲遺聞</system:String>
+    <system:String x:Key="ReclamationThemeRelaunchAnchor">重啟錨點</system:String>
+    <system:String x:Key="ReclamationMode">模式</system:String>
+    <system:String x:Key="ReclamationModeRA1">RA-1</system:String>
+    <system:String x:Key="ReclamationModeRA4">RA-4</system:String>
+    <system:String x:Key="ReclamationModeRA15">RA-15</system:String>
     <system:String x:Key="ReclamationModeProsperityNoSave">無存檔，透過進出關卡刷生息點數</system:String>
     <system:String x:Key="ReclamationModeProsperityInSave">有存檔，透過組裝支援道具刷生息點數</system:String>
     <system:String x:Key="ReclamationIncrementMode">增加方式</system:String>
@@ -859,9 +889,14 @@ C:\\leidian\\LDPlayer9\n
     <system:String x:Key="LastSyncTime">上次同步時間</system:String>
     <system:String x:Key="DepotRecognitionTip">該功能尚處於測試階段，請檢查結果是否準確再行使用。若有誤，歡迎打包 debug/depot 資料夾後向我們提交 issue ~</system:String>
     <system:String x:Key="StartToDepotRecognition">開始辨識</system:String>
-    <system:String x:Key="ExportToArkplanner">匯出到企鵝物流刷圖規劃</system:String>
-    <system:String x:Key="ExportToLolicon">匯出到明日方舟工具箱</system:String>
+    <system:String x:Key="ExportToArkplanner">企鵝物流刷圖規劃</system:String>
+    <system:String x:Key="ExportToLolicon">明日方舟工具箱</system:String>
+    <system:String x:Key="ExportToMarkdown">Markdown</system:String>
+    <system:String x:Key="ExportToCsv">CSV</system:String>
     <system:String x:Key="CopiedToClipboard">已複製到剪貼簿</system:String>
+    <system:String x:Key="ExportedToFile">已匯出到檔案</system:String>
+    <system:String x:Key="ExportTo">匯出到：</system:String>
+    <system:String x:Key="Export">匯出</system:String>
     <!--  !倉庫辨識  -->
     <!--  日誌  -->
     <system:String x:Key="OperBoxRecognition">{key=Operator}辨識</system:String>
@@ -871,6 +906,17 @@ C:\\leidian\\LDPlayer9\n
     <system:String x:Key="OperBoxNotHaveList">未擁有：{0} 名</system:String>
     <system:String x:Key="StartToOperBoxRecognition">開始辨識</system:String>
     <system:String x:Key="OperBoxCopyToClipboard">複製到剪貼簿</system:String>
+    <system:String x:Key="OperBoxExportToClipboard">剪貼簿</system:String>
+    <system:String x:Key="OperBoxExportToJson">JSON</system:String>
+    <system:String x:Key="OperBoxExportHeaderName">幹員</system:String>
+    <system:String x:Key="OperBoxExportHeaderId">ID</system:String>
+    <system:String x:Key="OperBoxExportHeaderRarity">星級</system:String>
+    <system:String x:Key="OperBoxExportHeaderElite">精英化等級</system:String>
+    <system:String x:Key="OperBoxExportHeaderLevel">等級</system:String>
+    <system:String x:Key="OperBoxExportHeaderOwn">是否擁有</system:String>
+    <system:String x:Key="OperBoxExportHeaderPotential">潛能</system:String>
+    <system:String x:Key="OperBoxExportYes">是</system:String>
+    <system:String x:Key="OperBoxExportNo">否</system:String>
     <!--  !日誌  -->
     <!--  自動戰鬥  -->
     <system:String x:Key="VideoRecognition">影片辨識</system:String>
@@ -1042,17 +1088,16 @@ C:\\leidian\\LDPlayer9\n
         2. {key=MainStage}、{key=StoryCollection}、{key=SideStory}：請在關卡介面右下角顯示 ｢開始行動｣ 按鈕的畫面啟動。\n\n
         3. {key=SSS}：resource/copilot 資料夾內建多份作業。請先手動編隊，在右下角顯示 ｢開始部署｣ 按鈕的介面啟動，可配合 ｢{key=LoopTimes}｣。\n\n
         4. {key=ParadoxSimulation}：選好技能後，在技能選擇介面顯示 ｢開始模擬｣ 按鈕的畫面啟動；1/2★ {key=Operator}（無技能）在右下角顯示 ｢開始模擬｣ 按鈕的介面啟動。若使用 ｢{key=UseCopilotList}｣，請從{key=Operator}列表的「等級 / 稀有度」標籤頁啟動。\n\n
-        5. 使用好友助戰時，請關閉 ｢{key=AutoSquad}｣ 和 ｢{key=UseCopilotList}｣，手動選擇{key=Operator}後，在編隊介面右下角顯示 ｢開始行動｣ 按鈕的畫面啟動。\n\n
-        6. {key=Operator}若被標記為 ｢特別關注｣，可能影響 ｢{key=AutoSquad}｣ 的辨識與選擇。建議使用 ｢{key=AutoSquad}｣ 時移除特別關注，或在報錯後關閉 ｢{key=AutoSquad}｣，並依據提示手動補充缺少的{key=Operator}。\n\n
-        7. Copilot 作業站的神秘代碼可透過輸入框右側的貼上按鈕貼上：\n
-        ● 點選第 2 個按鈕 = 新增作業。\n
-        ● 點選第 3 個按鈕 = 新增作業集。\n\n
-        8. {key=UseCopilotList}：\n
-        ● 選擇作業後，檢查下方關卡名稱是否正確 (例: CV-EX-1)。\n
-        ● 加入：左鍵 = 普通難度，右鍵 = 突襲難度。\n
-        ● 清除：左鍵 = 全部清空，右鍵 = 僅移除未啟用任務。\n
-        ● 請在能看到目標關卡名稱的介面啟動，不支援跨章節導航。\n
-        ● 遇到理智不足、戰鬥失敗、未能三星結算時將會自動中止。
+        5. {key=Operator}若被標記為 ｢特別關注｣，可能影響 ｢{key=AutoSquad}｣ 的辨識與選擇。建議使用 ｢{key=AutoSquad}｣ 時移除特別關注，或在報錯後關閉 ｢{key=AutoSquad}｣，並依據提示手動補充缺少的{key=Operator}。\n\n
+        6. Copilot 作業站的神秘代碼可透過輸入框右側的貼上按鈕貼上：\n
+        • 點選第 2 個按鈕 = 新增作業。\n
+        • 點選第 3 個按鈕 = 新增作業集。\n\n
+        7. {key=UseCopilotList}：\n
+        • 選擇作業後，檢查下方關卡名稱是否正確 (例: CV-EX-1)。\n
+        • 加入：左鍵 = 普通難度，右鍵 = 突襲難度。\n
+        • 清除：左鍵 = 全部清空，右鍵 = 僅移除未啟用任務。\n
+        • 請在能看到目標關卡名稱的介面啟動，不支援跨章節導航。\n
+        • 遇到理智不足、戰鬥失敗、未能三星結算時將會自動中止。
     </system:String>
     <system:String x:Key="CopilotFileReadError">讀取檔案失敗！</system:String>
     <system:String x:Key="CopilotNoFound">未找到對應作業！</system:String>
@@ -1099,6 +1144,7 @@ C:\\leidian\\LDPlayer9\n
     <!--  !ErrorView  -->
     <!--  AsstProxy  -->
     <system:String x:Key="UpdateApplyFailed">更新失敗，目前的安裝可能已不完整。請重新下載完整安裝檔案，並依照下方說明手動搬移 config、data 與 debug。\n\n{key=FullPackageUpgradeTips}</system:String>
+    <system:String x:Key="UpdateApplyMissingUpdater">更新無法繼續，因為缺少 MAA.Updater.exe，無法啟動外部更新程式。本次更新已取消。此檔案可能已被手動刪除，也可能被某些安全軟體攔截或刪除。若是安全軟體所致，請前往對應軟體的隔離區尋找並還原該檔案，並建議將 MAA 所在資料夾加入對應軟體白名單後再試一次。\n\n{key=FullPackageUpgradeTips}</system:String>
     <system:String x:Key="ResourceBroken">檔案損毀，請重新下載完整安裝檔案。\n\n{key=FullPackageUpgradeTips}</system:String>
     <system:String x:Key="ReplaceAdbNotExists">ADB 路徑不存在</system:String>
     <system:String x:Key="AdbDownloadFailedTitle">ADB 下載失敗</system:String>
@@ -1138,6 +1184,7 @@ C:\\leidian\\LDPlayer9\n
     <system:String x:Key="HasReturned">已返回</system:String>
     <system:String x:Key="DropRecognitionError">掉落辨識錯誤</system:String>
     <system:String x:Key="GiveUpUploadingPenguins">放棄上傳企鵝物流</system:String>
+    <system:String x:Key="ReportSkippedForPcClient">PC 端滑鼠為獨立渲染，可能遮擋掉落物及數量辨識。為避免錯誤資料污染資料池，已自動跳過本次上報</system:String>
     <system:String x:Key="TheEx">無獎勵關卡，已停止</system:String>
     <system:String x:Key="MissingOperators">缺少以下{key=Operator}組的{key=Operator}：</system:String>
     <system:String x:Key="RecruitSupportOperator">編入助戰{key=Operator}：{0}</system:String>
@@ -1151,7 +1198,7 @@ C:\\leidian\\LDPlayer9\n
     <system:String x:Key="MedicineUsedTimesWithExpiring" xml:space="preserve">藥: {0}，{1} (即將過期)  </system:String>
     <system:String x:Key="StoneUsedTimes" xml:space="preserve">石: {0}  </system:String>
     <system:String x:Key="MedicineUsed">已使用理智藥</system:String>
-    <system:String x:Key="ExpiringMedicineUsed">已使用 48 小時內過期的理智藥</system:String>
+    <system:String x:Key="ExpiringMedicineUsed">已使用 {0} 小時內過期的理智藥</system:String>
     <system:String x:Key="StoneUsed">已使用源石</system:String>
     <system:String x:Key="ActingCommandError">代理指揮失誤</system:String>
     <system:String x:Key="FightMissionFailedAndStop">代理失敗次數已達上限，任務已停止</system:String>
@@ -1218,6 +1265,7 @@ C:\\leidian\\LDPlayer9\n
     <system:String x:Key="ProductIncorrect">產物與配置不符。</system:String>
     <system:String x:Key="ProductUnknown">無法辨識的產物</system:String>
     <system:String x:Key="ProductChanged">產物已切換</system:String>
+    <system:String x:Key="ProductChangeFail">產物切換失敗</system:String>
     <system:String x:Key="RecruitingResults" xml:space="preserve">公招辨識結果：</system:String>
     <system:String x:Key="RecruitingTips">公招提示</system:String>
     <system:String x:Key="RecruitmentOfStar">公招出現 {0}★ 囉！</system:String>
@@ -1281,10 +1329,9 @@ C:\\leidian\\LDPlayer9\n
     <system:String x:Key="AttachWindowFailed">AttachWindow 綁定視窗失敗，請檢查截圖/輸入方式配置</system:String>
     <system:String x:Key="UseAttachWindowTip">使用 Win32 視窗綁定明日方舟 PC 端，而非 ADB 連接模擬器或手機</system:String>
     <system:String x:Key="UseAttachWindowWarning" xml:space="preserve">連接 PC 端（實驗性功能，穩定性無法保證）
-由於 MAA Team 開發人手有限，PC 端功能長期缺乏專人維護，可能存在功能異常或運行不穩定等問題：
-● 遇到問題時，我們可能無法及時回應或修復
-● 若無法正常使用，建議切換至 ADB 模式連接 Android 模擬器或行動裝置
-● 誠摯歡迎有開發能力的用戶提交 Pull Request，共同完善 PC 端支援
+由於 MAA Team 開發人手有限，此功能由社群維護，並非由 MAA Team 持續支援，功能與穩定性可能不盡理想，遇到問題時也可能無法第一時間修復。
+如遇到影響使用的問題，建議改用 ADB 連接 Android 模擬器或行動裝置，以獲得更穩定的體驗。
+我們也始終歡迎有能力的開發者參與貢獻並提交 Pull Request，共同完善 PC 端支援。
 
 使用前請確認：
 1. 需以系統管理員身分啟動 MAA
@@ -1433,7 +1480,54 @@ DEBUG 目錄下儲存的圖片有數量限制，超出後會自動清理舊圖�
     <system:String x:Key="AnnouncementNotFinishedConfirm3">還點</system:String>
     <!--  !Announcement  -->
     <!--  Reclamation  -->
-    <system:String x:Key="ReclamationEarlyTip" xml:space="preserve">
+    <system:String x:Key="ReclamationTipRelaunchAnchorRA1" xml:space="preserve">
+收益參考：每把約 159 代幣 + 統籌點數，單輪耗時約 2 分 10 秒
+
+幹員要求：無
+
+前置條件：主線已通關 RA-1
+
+在大地圖打開 RA-1，右下角出現「開啟建設」時啟動任務即可自動循環
+
+注意：如果已解鎖開局額外攜帶物品的相關科技，請將基地內會導致開局額外攜帶物品的設施拆除，如食品供給站、飲品供給站、獸欄等
+
+任務流程：自動執行精耕細作、建設、交付資源、結算循環
+    </system:String>
+    <system:String x:Key="ReclamationTipRelaunchAnchorRA4" xml:space="preserve">
+收益參考：每把約 417 代幣 + 統籌點數，單輪耗時約 1 分 40 秒
+
+幹員要求：維什戴爾（可借助戰）
+
+前置條件：
+1. 推進主線至 RA-4 已通關狀態
+2. 解鎖策略籌劃經營
+3. 如果自己有維什戴爾，請手動打開關卡並配隊一次，保證為任意 5 個費用比維什戴爾低的幹員+ 維什戴爾，且維什戴爾位於六號位即最後一個選的人，然後確認招募，放棄本次建設並在開始建設處開始
+4. 如果使用助戰維什戴爾，請保證維什戴爾在狙擊助戰首頁（考慮摯友），請手動打開關卡編入任意 5 個費用比維什戴爾低的幹員，六號位選擇維什戴爾助戰後確認招募，放棄本次建設並在開始建設處開始（保證隊伍前五位有人且六號位為空）
+
+在大地圖打開 RA-4，右下角出現「開啟建設」時啟動任務即可自動循環
+
+注意：如果已解鎖開局額外攜帶物品的相關科技，請將基地內會導致開局額外攜帶物品的設施拆除，如食品供給站、飲品供給站、獸欄等
+
+任務流程：使用籌劃經營策略給予的赤金解鎖區域，使用維什戴爾完成擊殺 boss 任務
+    </system:String>
+    <system:String x:Key="ReclamationTipRelaunchAnchorRA15" xml:space="preserve">
+收益參考：每把約 500 代幣 + 統籌點數，單輪耗時約 3 分鐘
+
+幹員要求：聖聆初雪（可借助戰）
+
+前置條件：
+1. 主線已通關 RA-15
+2. 如果自己有聖聆初雪，請手動打開 RA-15 並配隊一次。選擇五先鋒（無練度要求）+ 聖聆初雪，且初雪位於最後一位，儲存配隊後退出關卡
+3. 如果使用助戰聖聆初雪，請確認聖聆初雪位於術士助戰首頁（考慮摯友）
+
+在大地圖打開 RA-15，右下角出現「開啟建設」時啟動任務即可自動循環
+
+注意： 如果已解鎖開局額外攜帶物品的相關科技，請將基地內會導致開局額外攜帶物品的設施拆除，如食品供給站、飲品供給站、獸欄等
+
+任務流程： 自動借助戰執行 60 殺任務
+    </system:String>
+    <system:String x:Key="ReclamationTipFire">該活動已關閉，無法使用</system:String>
+    <system:String x:Key="ReclamationTipTales" xml:space="preserve">
 目前生息演算的支援仍處於中期階段，使用時請注意以下幾點：
 
  透過開局刷點數：（請注意：已有存檔可能會被刪除）
@@ -1469,15 +1563,22 @@ DEBUG 目錄下儲存的圖片有數量限制，超出後會自動清理舊圖�
 如需多開 MAA，請複製一份新的 MAA 到其他資料夾，並設定使用不同的 MAA，搭配相同的 ADB 與不同的模擬器位址進行多開操作。
     </system:String>
     <system:String x:Key="SoftwareLocationWarning">目前軟體所在的位置無法儲存資料，可能會導致設定遺失或執行異常。建議將軟體移動到可寫入的目錄中執行，請勿放置在系統保護目錄（如 Program Files、System32 或 Windows 目錄）中。</system:String>
-    <system:String x:Key="RunningInTempDirectoryError">MAA 無法在壓縮檔或系統暫存目錄中執行。請將 MAA 從壓縮檔中完整解壓縮，或將 MAA 移動到一般資料夾中再執行。</system:String>
+    <system:String x:Key="UnsupportedInstallLocationError" xml:space="preserve">MAA 不能直接在目前安裝位置中執行，例如暫存目錄、磁碟根目錄，或系統/使用者共用目錄。
+
+目前安裝目錄：{0}
+命中的不支援位置：{1}
+
+這些位置層級過高，容易引發檔案覆蓋、設定寫入異常或資料混亂。請先將 MAA 移動到獨立資料夾中，例如 D:\\MAA\\，再重新啟動。</system:String>
     <!--  !Boot  -->
     <!--  SimpleEncryptionHelper  -->
     <system:String x:Key="EncryptionError">加解密失敗，請重新進行相關設定，否則加密內容將以純文字形式儲存在設定檔中。</system:String>
     <!--  !SimpleEncryptionHelper  -->
     <!--  TimeOutTimer  -->
-    <system:String x:Key="TaskTimeoutMinutes">任務逾時時間（分鐘）</system:String>
-    <system:String x:Key="ReminderIntervalMinutes">提醒間隔時間（分鐘）</system:String>
-    <system:String x:Key="TaskTimeoutWarning">任務已執行超過 {0} 分鐘（目前已執行 {1} 分鐘）。若長時間無進一步日誌更新，可能需要手動干預。</system:String>
+    <!-- <system:String x:Key="TaskTimeoutMinutes">任務逾時時間（分鐘）</system:String> -->
+    <system:String x:Key="ReminderIntervalMinutes">通知間隔時間（分鐘）</system:String>
+    <system:String x:Key="StallTimeoutMinutes">日誌輸出停滯超時時間（分鐘）</system:String>
+    <system:String x:Key="StallTimeoutEnabled">啟用停滯偵測</system:String>
+    <system:String x:Key="TaskStallWarning">任務日誌輸出已超過 {0} 分鐘無更新（當前已停滯 {1} 分鐘）。如果長時間無進一步日誌輸出，可能需要手動干預。</system:String>
     <!--  !TimeOutTimer  -->
     <!--  Achievement  -->
     <system:String x:Key="AchievementCelebrate">🎉 達成成就</system:String>
@@ -1542,6 +1643,9 @@ DEBUG 目錄下儲存的圖片有數量限制，超出後會自動清理舊圖�
     <system:String x:Key="Achievement.Martian.Description">遠古版本好用嗎？</system:String>
     <system:String x:Key="Achievement.Martian.Conditions">資源時間或版本時間距今超過 3 個月</system:String>
     <system:String x:Key="Achievement.Martian.ConditionsTip">資源時間或版本時間距今超過 {0} 個月</system:String>
+
+    <system:String x:Key="ConfigurationRecoveredNotification">目標設定 "{0}" 缺少，已從目前設定複製，建議檢查所有設定</system:String>
+    <system:String x:Key="ConfigurationBrokenCaption">設定異常</system:String>
 
     <system:String x:Key="Achievement.AnnouncementStubbornClick.Title">死不悔改</system:String>
     <system:String x:Key="Achievement.AnnouncementStubbornClick.Description">即使提示了這麼多次，你依然選擇不看公告。</system:String>

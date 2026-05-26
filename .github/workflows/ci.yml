@@ -150,10 +150,15 @@ jobs:
           cp MaaFramework-temp/bin/*Win32ControlUnit* install/
           cp MaaFramework-temp/bin/*AdbControlUnit* install/
 
+      - name: Generate global.json
+        shell: bash
+        run: |
+          echo '{"sdk":{"version":"10.0.203","rollForward":"disable"}}' > global.json
+
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.202'
+          global-json-file: global.json
 
       - name: Cache .nuke/temp, ~/.nuget/packages
         id: cache-nuget
@@ -203,6 +208,7 @@ jobs:
         with:
           name: MAAComponent-DebugSymbol-win-${{ matrix.arch }}
           path: install/MAAComponent-DebugSymbol-${{ needs.meta.outputs.tag }}-win-${{ matrix.arch }}.zip
+          compression-level: 0
 
       - name: Organize install files
         shell: bash
@@ -225,6 +231,7 @@ jobs:
         with:
           name: MAA-win-${{ matrix.arch }}
           path: install/MAA-*.zip
+          compression-level: 0
 
   ubuntu:
     name: Build for Ubuntu
@@ -302,7 +309,7 @@ jobs:
           mkdir -pv release
           mkdir -pv Maa.AppDir/usr/share/maa
           cp -r install/* Maa.AppDir/usr/share/maa/
-          wget -c https://raw.githubusercontent.com/MaaAssistantArknights/design/main/logo/maa-logo_512x512.png -O Maa.AppDir/maa.png
+          wget -c https://raw.githubusercontent.com/MaaAssistantArknights/design/main/v2/icons/maa-logo_512x512.png -O Maa.AppDir/maa.png
           mkdir -pv Maa.AppDir/usr/share/icons/hicolor/512x512/apps/
           cp -v Maa.AppDir/maa.png Maa.AppDir/usr/share/icons/hicolor/512x512/apps/
           cp -v appimage-maa Maa.AppDir/usr/share/maa/maa
@@ -343,6 +350,80 @@ jobs:
           path: |
             release/*.AppImage
             release/*.tar.gz
+          compression-level: 0
+
+  android:
+    name: Build for Android
+    needs: meta
+    runs-on: macos-26
+    strategy:
+      matrix:
+        arch: [arm64, x64]
+      fail-fast: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          show-progress: false
+
+      - name: Fetch submodules
+        run: |
+          git submodule update --init --depth 1 src/MaaUtils
+
+      - name: Cache MaaDeps
+        id: cache-maadeps
+        uses: actions/cache@v5
+        continue-on-error: true
+        with:
+          path: ./src/MaaUtils/MaaDeps
+          key: ${{ runner.os }}-${{ matrix.arch }}-android-maadeps-${{ hashFiles('tools/maadeps-download.py') }}
+
+      - name: Bootstrap MaaDeps
+        if: steps.cache-maadeps.outputs.cache-hit != 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 tools/maadeps-download.py ${{ matrix.arch }}-android
+
+      - name: Setup Android NDK
+        id: setup-ndk
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r29
+
+      - name: Configure, build and install
+        run: |
+          cmake -B build --preset 'android-publish-${{ matrix.arch }}' \
+            -DCMAKE_TOOLCHAIN_FILE=${{ steps.setup-ndk.outputs.ndk-path }}/build/cmake/android.toolchain.cmake \
+            -DMAA_HASH_VERSION='${{ needs.meta.outputs.tag }}'
+          cmake --build build --parallel $(sysctl -n hw.logicalcpu)
+          cmake --install build --prefix install
+
+      - name: Download MaaFramework
+        uses: robinraju/release-downloader@v1
+        with:
+          repository: MaaXYZ/MaaFramework
+          latest: true
+          fileName: "*android-${{ matrix.arch == 'arm64' && 'aarch64' || 'x86_64' }}*.zip"
+          extract: true
+          out-file-path: MaaFramework-temp
+
+      - name: Copy MaaAndroidNativeControlUnit
+        run: |
+          cp MaaFramework-temp/bin/libMaaAndroidNativeControlUnit.so install/
+
+      - name: Tar files
+        run: |
+          cd install
+          tar czvf $GITHUB_WORKSPACE/MAAComponent-${{ needs.meta.outputs.tag }}-android-${{ matrix.arch }}.tar.gz .
+
+      - name: Upload MAA to GitHub
+        uses: actions/upload-artifact@v7
+        with:
+          name: MAAComponent-android-${{ matrix.arch }}
+          path: MAAComponent-*.tar.gz
+          compression-level: 0
 
   macOS-Core:
     name: Build Core for macOS
@@ -440,14 +521,14 @@ jobs:
 
       - name: Install Developer ID certificate
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: apple-actions/import-codesign-certs@v6
+        uses: apple-actions/import-codesign-certs@v7
         with:
           p12-file-base64: ${{ secrets.HGUANDL_SIGN_CERT_P12 }}
           p12-password: ${{ secrets.HGUANDL_SIGN_CERT_PASSWD }}
 
       - name: Download provisioning profiles
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: apple-actions/download-provisioning-profiles@v5
+        uses: apple-actions/download-provisioning-profiles@v6
         with:
           bundle-id: "com.hguandl.MeoAsstMac"
           issuer-id: ${{ secrets.HGUANDL_APPSTORE_ISSUER }}
@@ -483,6 +564,8 @@ jobs:
         with:
           name: MAA-macos-runtime-universal
           path: runtime/MAA-${{ needs.meta.outputs.tag }}-macos-runtime-universal.zip
+          compression-level: 0
+
 
       - name: Build XCFramework
         run: |
@@ -569,7 +652,7 @@ jobs:
   release:
     name: Publish Release
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: [meta, windows, ubuntu, macOS-Core, macOS-GUI]
+    needs: [meta, windows, ubuntu, android, macOS-Core, macOS-GUI]
     runs-on: ubuntu-latest
     steps:
       - name: Download MAA from GitHub
@@ -609,11 +692,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.MISTEOWORKFLOW }}
 
-      - name: Create issue on failure
-        if: failure()
-        uses: actions-cool/issues-helper@v3
-        with:
-          actions: "create-issue"
           title: "Errors occured during release ${{ needs.meta.outputs.tag }}"
           body: |
             ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}

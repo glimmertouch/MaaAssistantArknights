@@ -118,7 +118,7 @@ Bilibili：`张三`、入力可能：`张三`、`张`、`三`
 ステージ名。デフォルトは空で、現在/最後のステージを認識します。実行中の設定はサポートされていません。  
 ナビゲーション対象のステージは以下の通りです：
 
-- すべてのメイン ストーリー ステージ。ステージの最後に `-NORMAL` または `-HARD` を追加して、標準または困難なステージを切り替えることができます。
+- すべてのメイン ストーリー ステージ。ステージ末尾に `-NORMAL` または `-HARD` を付けて難易度を切り替えできます（10〜14章は標準/厄難、15章以降は通常/険地）。
 - 龍門幣、作戦記録の 5/6 関。ただし `CE-6` / `LS-6` と入力する必要があります。MAA は 6 関が代理できない場合は自動的に 5 関に切り替わります。
 - スキル本、購買資格証、碳素材の第 5 関。`CA-5` / `AP-5` / `SK-5` と入力する必要があります。
 - すべてのチップ本。完全なステージ番号を入力する必要があります（例：`PR-A-1`）。
@@ -910,32 +910,44 @@ Sarkaz テーマ、Investment モード、「破棘成金分隊」または「�
 ::: field name="enable" type="boolean" optional default="true"  
 このタスクを有効にするかどうか。  
 :::  
-::: field name="theme" type="string" optional default="Fire"  
+::: field name="theme" type="string" optional default="Tales"  
 テーマ。
 <br>
-`Fire` - _砂中の火_
+`Fire` - _砂中の火_（終了）
 <br>
-`Tales` - _熱砂秘聞_  
+`Tales` - _熱砂秘聞_
+<br>
+`RelaunchAnchor` - _リローンチアンカー_  
 :::  
 ::: field name="mode" type="number" optional default="0"  
-モード。
+モード。テーマごとにサポートするモードが異なります：
 <br>
-`0` - ポイント稼ぎと建造ポイント、戦闘に入って直接退出。
+**Tales（熱砂秘聞）：**
 <br>
-`1` - 沙中之火：赤金稼ぎ、連絡員から水購入後基地で鍛造；沙洲遗闻：支援アイテムを組み立てて生息ポイントを稼ぐ。  
+`0` - セーブなし、ステージ出入りで生息ポイントを稼ぐ。
+<br>
+`1` - セーブあり、支援アイテムを組み立てて生息ポイントを稼ぐ。
+<br>
+**RelaunchAnchor（リローンチアンカー）：**
+<br>
+`16` (`RA1`) - RA-1、精耕細作→建設→資源納品→決算を自動ループ。
+<br>
+`32` (`RA15`) - RA-15、シヴィライト・エテルナで60撃破ミッションを達成。
+<br>
+`48` (`RA4`) - RA-4、「計画経営」で得た赤金を使ってエリアを解放し、ヴィシャデルでボス討伐を完了する。
 :::  
 ::: field name="tools_to_craft" type="array<string>" optional default="[&quot;荧光棒&quot;]"  
-自動製造品。サブストリング入力推奨。  
+自動製造品。サブストリング入力推奨。Tales テーマのみ有効。  
 :::  
 ::: field name="increment_mode" type="number" optional default="0"  
-クリック型。
+クリック型。Tales テーマのみ有効。
 <br>
 `0` - 連続クリック
 <br>
 `1` - 長押し  
 :::  
 ::: field name="num_craft_batches" type="number" optional default="16"  
-単次最大製造バッチ数。  
+単次最大製造バッチ数。Tales テーマのみ有効。  
 :::  
 ::::
 
@@ -1158,5 +1170,8 @@ AdbLite を使用するかどうか。可能な値："0" または "1"。列挙�
 :::  
 ::: field name="KillAdbOnExit" type="boolean" optional  
 終了時に Adb プロセスをキルするかどうか。可能な値："0" または "1"。列挙値：5。  
+:::  
+::: field name="ClientType" type="string" optional  
+クライアント種別（ゲームチャネル）。ほとんどの接続設定では不要です。`AsstConnect` / `AsstAsyncConnect` に渡す `config` が、接続時に実行するコマンド内で `[PackageName]` を使用する場合にのみ、接続前に `AsstSetInstanceOption(..., ClientType, ...)` を設定してください。現在の組み込み設定では、`Androws` と `WSA` の `displayId` 取得のみがこの値に依存します。このオプションは StartUp / CloseDown などのタスクパラメータ `client_type` を置き換えるものではありません。列挙値：6。  
 :::  
 ::::

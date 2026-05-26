@@ -42,7 +42,7 @@
     <system:String x:Key="ExternalNotificationEnableDetails">상세 정보 출력</system:String>
     <system:String x:Key="ExternalNotificationSendWhenComplete">작업 완료 시 알림 전송</system:String>
     <system:String x:Key="ExternalNotificationSendWhenError">작업 실패 시 알림 전송</system:String>
-    <system:String x:Key="ExternalNotificationSendWhenTimeout">작업 시간 초과 시 알림 전송</system:String>
+    <system:String x:Key="ExternalNotificationSendWhenStalled">작업 로그 출력 정지 시 알림 전송</system:String>
     <system:String x:Key="ExternalNotificationSendSuccess">전송 성공</system:String>
     <system:String x:Key="ExternalNotificationSendFail">전송 실패</system:String>
     <system:String x:Key="ExternalNotificationSendTest">테스트</system:String>
@@ -179,6 +179,7 @@
     <system:String x:Key="MuMuEmulator12">MuMu Player</system:String>
     <system:String x:Key="LDPlayer">LD Player</system:String>
     <system:String x:Key="AVD">Android Virtual Device (AVD)</system:String>
+    <system:String x:Key="Androws">Androws</system:String>
     <system:String x:Key="Nox">Nox</system:String>
     <system:String x:Key="XYAZ">MEmu</system:String>
     <system:String x:Key="WSA">WSA 레거시 버전</system:String>
@@ -252,7 +253,7 @@
     <system:String x:Key="IS5NewSquad6">꽃다발 분대</system:String>
     <system:String x:Key="IS5NewSquad7">초강수 분대</system:String>
     <system:String x:Key="IS5NewSquad8">쉐이 울림 분대</system:String>
-    <system:String x:Key="IS5NewSquad9">대리인 분대 (代理人分队)</system:String>
+    <system:String x:Key="IS5NewSquad9">대리인 분대 (不支持)</system:String>
     <system:String x:Key="IS5NewSquad10">지학 분대 (知学分队)</system:String>
     <system:String x:Key="IS5NewSquad11">상고 분대 (商贾分队)</system:String>
     <system:String x:Key="SpecialForceSquad">특근 분대</system:String>
@@ -353,21 +354,21 @@
     <system:String x:Key="UpdateSource">업데이트 소스</system:String>
     <system:String x:Key="UpdateSourceTip" xml:space="preserve">
 🌏 {key=GlobalSource} 사용:
-    ● {key=UpdateCheckNow}: MAA Team에서 업데이트를 확인하고, GitHub에서 설치 파일을 다운로드합니다. 중국에서는 직접 연결 가능한 미러도 제공됩니다. (대역폭이 제한되어 있으며, 트래픽에 따라 접속이 제한될 수 있습니다)
-    ● {key=ResourceUpdate}: {key=MirrorChyan}에서 무료로 업데이트 확인을 제공합니다. 설정에서 "{key=ResourceUpdate}"를 수동으로 클릭하여 GitHub에서 다운로드할 수 있습니다
+    • {key=UpdateCheckNow}: MAA Team에서 업데이트를 확인하고, GitHub에서 설치 파일을 다운로드합니다. 중국에서는 직접 연결 가능한 미러도 제공됩니다. (대역폭이 제한되어 있으며, 트래픽에 따라 접속이 제한될 수 있습니다)
+    • {key=ResourceUpdate}: {key=MirrorChyan}에서 무료로 업데이트 확인을 제공합니다. 설정에서 "{key=ResourceUpdate}"를 수동으로 클릭하여 GitHub에서 다운로드할 수 있습니다
 
 🔑 {key=MirrorChyan} 사용:
-    ● CDK 입력 시, 소프트웨어와 리소스 모두 자동 업데이트를 지원합니다
-    ● {key=MirrorChyan}의 고속 CDN을 통해 우선 다운로드되어 더욱 안정적이고 빠릅니다
+    • CDK 입력 시, 소프트웨어와 리소스 모두 자동 업데이트를 지원합니다
+    • {key=MirrorChyan}의 고속 CDN을 통해 우선 다운로드되어 더욱 안정적이고 빠릅니다
 
 📦 수동 업데이트:
-    ● {key=UpdateCheckNow}: 전체 패키지 또는 OTA 업데이트 패키지를 다운로드한 뒤 앱으로 드래그하면, 앱이 자동으로 압축을 풀고 오래된 파일을 정리합니다
-    ● {key=ResourceUpdate}: 리소스 패키지를 다운로드한 후 resource 폴더에 덮어쓰기하세요. 증분 방식으로 제공되므로 기존 폴더를 삭제하지 마세요. 리소스가 손상될 수 있습니다
+    • {key=UpdateCheckNow}: 전체 패키지 또는 OTA 업데이트 패키지를 다운로드한 뒤 앱으로 드래그하면, 앱이 자동으로 압축을 풀고 오래된 파일을 정리합니다
+    • {key=ResourceUpdate}: 리소스 패키지를 다운로드한 후 resource 폴더에 덮어쓰기하세요. 증분 방식으로 제공되므로 기존 폴더를 삭제하지 마세요. 리소스가 손상될 수 있습니다
 
 📄 업데이트 설명:
-    ● {key=UpdateCheckNow}: UI 및 기능 업데이트가 포함됩니다. UI 변경 및 새로운 기능은 모두 {key=UpdateCheckNow}를 통해 제공됩니다
-    ● {key=ResourceUpdate}: 자동 전투용 신규 스테이지, 드롭 아이콘, 공개모집 태그 등의 리소스 데이터가 포함됩니다
-    ● 내비 핫픽스: 자동으로 실행되어 메인 화면 하단의 안내 및 이벤트 스테이지 입구를 업데이트합니다. 성공 시 우측 상단에 “{key=ApiUpdateSuccess}” 메시지가 표시됩니다
+    • {key=UpdateCheckNow}: UI 및 기능 업데이트가 포함됩니다. UI 변경 및 새로운 기능은 모두 {key=UpdateCheckNow}를 통해 제공됩니다
+    • {key=ResourceUpdate}: 자동 전투용 신규 스테이지, 드롭 아이콘, 공개모집 태그 등의 리소스 데이터가 포함됩니다
+    • 내비 핫픽스: 자동으로 실행되어 메인 화면 하단의 안내 및 이벤트 스테이지 입구를 업데이트합니다. 성공 시 우측 상단에 “{key=ApiUpdateSuccess}” 메시지가 표시됩니다
 </system:String>
     <system:String x:Key="GlobalSource">글로벌 소스</system:String>
     <system:String x:Key="ForceGithubGlobalSource">GitHub 강제 사용</system:String>
@@ -400,12 +401,33 @@
     <system:String x:Key="CheckNetworking">네트워크 연결이나 프록시를 확인해 주세요.</system:String>
     <system:String x:Key="GetReleaseNoteFailed">릴리즈 노트를 받아오지 못했습니다.</system:String>
     <system:String x:Key="NewVersionIsBeingBuilt">새로운 버전이 빌드되는 중입니다. 다음에 다시 시도해 주세요</system:String>
-    <system:String x:Key="NewVersionNoOtaPackage">새 버전이 감지되었지만 사용할 수 있는 OTA 증분 업데이트 패키지가 없습니다. 전체 패키지를 다운로드하며, config, data, debug 폴더는 유지되고 그 외의 파일은 휴지통과 .old 폴더로 이동합니다. 필요하다면 수동으로 백업해 주세요.</system:String>
+    <system:String x:Key="MirrorChyanBuildingOta">MirrorChyan이 이 버전에 대한 OTA 증분 업데이트를 빌드 중입니다. 약 10초 후에 자동으로 다시 시도합니다</system:String>
+    <system:String x:Key="NewVersionNoOtaPackage">새 버전이 감지되었지만 사용할 수 있는 OTA 증분 업데이트 패키지가 없습니다. 전체 패키지를 다운로드하며, cache, config, data, debug, achievement(클리어 스크린샷), background(배경 이미지), MAA.Updater.exe 는 유지되고 그 외의 파일은 휴지통과 .old 폴더로 이동합니다. 필요하다면 수동으로 백업해 주세요.</system:String>
     <system:String x:Key="NewVersionDownloadPreparing">업데이트 패키지 다운로드 준비 중……</system:String>
     <system:String x:Key="NewVersionDownloadFailedTitle">업데이트 패키지 다운로드 실패</system:String>
     <system:String x:Key="NewVersionDownloadFailedDesc">ZIP 파일을 수동으로 다운로드해 폴더 안에 놓아 주세요</system:String>
     <system:String x:Key="NewVersionDownloadCompletedTitle">업데이트 패키지 다운로드 완료</system:String>
     <system:String x:Key="NewVersionDownloadCompletedDesc">지금 바로 MAA를 업데이트하시겠습니까? (프로세스 재시작)</system:String>
+    <system:String x:Key="PendingFullUpdateManualConfirmTitle">전체 패키지 업데이트는 수동 확인이 필요합니다</system:String>
+    <system:String x:Key="PendingFullUpdateManualConfirmDesc" xml:space="preserve">전체 패키지로 업데이트해야 합니다.
+
+업데이트 방식: 여기서 전체 패키지를 다운로드하거나 가져오면, 이후 설치 단계에서 MAA는 현재 설치 루트 바로 아래의 최상위 파일과 폴더 중 cache, config, data, debug, achievement(클리어 스크린샷), background(배경 이미지), MAA.Updater.exe 를 제외한 항목을 먼저 정리한 뒤, 전체 패키지 내용을 그 디렉터리에 다시 씁니다.
+
+위험: MAA를 드라이브 루트, 바탕 화면, 다운로드 폴더, 또는 다른 프로그램이나 개인 파일과 같은 계층에 풀어 두었다면 그 같은 계층의 항목도 함께 삭제되거나 이동될 수 있습니다.
+
+권장 구조: 예를 들면 다음과 같이 MAA 전용 폴더 안에 배치하세요.
+D:\
+`-- MAA\
+    |-- MAA.exe
+    |-- config\
+    `-- data\
+
+계속하기 전에 설치 디렉터리 전체를 수동으로 백업하세요. 특히 MAA와 무관하지만 같은 계층에 있는 파일을 반드시 확인하세요.
+현재 설치 디렉터리: {0}
+
+디렉터리 구조가 올바른지 확인했고 수동 백업까지 끝났을 때만 계속 진행하세요.</system:String>
+    <system:String x:Key="PendingFullUpdateManualConfirmYes">백업했습니다. 업데이트를 계속합니다</system:String>
+    <system:String x:Key="PendingFullUpdateManualConfirmNo">지금은 업데이트하지 않고 현재 버전을 실행합니다</system:String>
     <system:String x:Key="LocalUpdatePackageImportedTitle">로컬 업데이트 패키지가 준비되었습니다</system:String>
     <system:String x:Key="LocalUpdatePackageImportedDesc">사용 가능한 로컬 업데이트 패키지를 감지했습니다. 지금 MAA를 업데이트하시겠습니까? (프로세스 재시작)</system:String>
     <system:String x:Key="LocalUpdatePackageUnsupported">압축 파일을 인식할 수 없습니다: {0}\n현재 아키텍처용 전체 패키지 또는 현재 버전에서 더 높은 버전으로 가는 OTA 패키지만 가져올 수 있습니다.\n현재 버전: {1}\n현재 아키텍처: {2}\n지원되는 파일명 예시: MAA-vTARGET_VERSION-win-{2}.zip\n또는 MAAComponent-OTA-{1}_vTARGET_VERSION-win-{2}.zip</system:String>
@@ -599,12 +621,13 @@ HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Notifications\Settin
     <system:String x:Key="UseExpireMedicineForActivity">이벤트 종료 48시간 전, 이번 주 만료되는 이성 회복제 사용</system:String>
     <system:String x:Key="NoActivity">활동 없음</system:String>
     <system:String x:Key="HideUnavailableStage">미개방 스테이지 숨기기</system:String>
-    <system:String x:Key="FightStageResetMode">만료된 단계가 다음으로 재설정됩니다</system:String>
+    <system:String x:Key="FightStageResetMode">만료된 스테이지 재설정</system:String>
     <system:String x:Key="HideSeries">{key=Series} 숨기기</system:String>
     <system:String x:Key="MainViewButtonFeature">메인 화면 버튼의 기능</system:String>
+    <system:String x:Key="StagePlanTip">열려 있는 첫 번째 스테이지로 진입합니다. 모든 스테이지가 열려 있지 않으면 현재 작업은 건너뜁니다.\n현재 실행 중: {0}</system:String>
     <system:String x:Key="CustomStageCode">스테이지 코드 수동 입력</system:String>
     <system:String x:Key="CustomStageCodeTip" xml:space="preserve">대부분의 기본 스테이지 이름과 원래 스테이지 이름 목록 지원 (예: 4-10, AP-5, H10-1-Hard)
-스테이지 이름 끝에 ｢Normal/Hard｣ 를 입력하여 일반 난이도와 하드 난이도 사이를 전환해야 하는 것을 표시할 수 있습니다
+스테이지 이름 끝에 ｢Normal/Hard｣ 를 입력해 난이도를 전환할 수 있습니다 (10-14장은 표준/재앙, 15장 이후는 일반/험지)
 ｢SSReopen-XX｣ 일회성 프록시 SS 포크의 일반 수준을 입력할 수 있습니다</system:String>
     <system:String x:Key="AutoDetectConnection">연결 자동 감지</system:String>
     <system:String x:Key="AutoDetectConnectionNotSupported">이 연결 구성에서는 자동 연결 감지가 지원되지 않습니다. 수동으로 포트 번호를 입력해보세요</system:String>
@@ -699,12 +722,19 @@ C:\\leidian\\LDPlayer9
     <system:String x:Key="Roguelike">{key=AutoRoguelike}</system:String>
     <system:String x:Key="Reclamation">생존 연산</system:String>
     <system:String x:Key="UserDataUpdate">사용자 데이터 업데이트</system:String>
-    <system:String x:Key="MiniGame">미니게임</system:String>
+    <system:String x:Key="MiniGame">편의 기능</system:String>
+    <system:String x:Key="MiniGameCategoryPermanent">상시</system:String>
+    <system:String x:Key="MiniGameCategoryCurrentEvent">현재 이벤트</system:String>
     <system:String x:Key="Custom">커스텀 작업</system:String>
     <system:String x:Key="SingleStep">단일 단계 작업</system:String>
     <system:String x:Key="ReclamationTheme">생존 연산 테마</system:String>
     <system:String x:Key="ReclamationThemeFire">모래 속의 불</system:String>
     <system:String x:Key="ReclamationThemeTales">사막 이야기</system:String>
+    <system:String x:Key="ReclamationThemeRelaunchAnchor">RELAUNCH ANCHOR</system:String>
+    <system:String x:Key="ReclamationMode">모드</system:String>
+    <system:String x:Key="ReclamationModeRA1">RA-1</system:String>
+    <system:String x:Key="ReclamationModeRA4">RA-4</system:String>
+    <system:String x:Key="ReclamationModeRA15">RA-15</system:String>
     <system:String x:Key="ReclamationModeProsperityNoSave">세이브 X, 스테이지 반복으로 번영의 선물 획득</system:String>
     <system:String x:Key="ReclamationModeProsperityInSave">세이브 O, 도구 제작으로 번영의 선물 획득</system:String>
     <system:String x:Key="ReclamationIncrementMode">증가 방식</system:String>
@@ -860,9 +890,14 @@ C:\\leidian\\LDPlayer9
     <system:String x:Key="LastSyncTime">마지막 동기화 시간</system:String>
     <system:String x:Key="DepotRecognitionTip">이 기능은 현재 테스트 중입니다. 내보내기 전 인식 결과가 맞는지 확인 후 사용하세요\n만약 오류가 있다면 MAA 경로 내 debug 폴더 안의 depot 폴더 전체를 압축해서 Github의 issue로 올려주세요</system:String>
     <system:String x:Key="StartToDepotRecognition">인식 시작</system:String>
-    <system:String x:Key="ExportToArkplanner">Arkplanner로 내보내기</system:String>
-    <system:String x:Key="ExportToLolicon">Arkntools으로 내보내기</system:String>
+    <system:String x:Key="ExportToArkplanner">Arkplanner</system:String>
+    <system:String x:Key="ExportToLolicon">Arkntools</system:String>
+    <system:String x:Key="ExportToMarkdown">Markdown</system:String>
+    <system:String x:Key="ExportToCsv">CSV</system:String>
     <system:String x:Key="CopiedToClipboard">클립보드에 복사됨</system:String>
+    <system:String x:Key="ExportedToFile">파일로 내보내기 완료</system:String>
+    <system:String x:Key="ExportTo">내보내기:</system:String>
+    <system:String x:Key="Export">내보내기</system:String>
     <!--  !창고 인식  -->
     <!--  오퍼레이터 인식  -->
     <system:String x:Key="OperBoxRecognition">{key=Operator} 인식</system:String>
@@ -872,6 +907,17 @@ C:\\leidian\\LDPlayer9
     <system:String x:Key="OperBoxNotHaveList">미보유: {0}</system:String>
     <system:String x:Key="StartToOperBoxRecognition">인식 시작</system:String>
     <system:String x:Key="OperBoxCopyToClipboard">클립보드에 복사</system:String>
+    <system:String x:Key="OperBoxExportToClipboard">클립보드</system:String>
+    <system:String x:Key="OperBoxExportToJson">JSON</system:String>
+    <system:String x:Key="OperBoxExportHeaderName">오퍼레이터</system:String>
+    <system:String x:Key="OperBoxExportHeaderId">ID</system:String>
+    <system:String x:Key="OperBoxExportHeaderRarity">희귀도</system:String>
+    <system:String x:Key="OperBoxExportHeaderElite">정예화</system:String>
+    <system:String x:Key="OperBoxExportHeaderLevel">레벨</system:String>
+    <system:String x:Key="OperBoxExportHeaderOwn">보유</system:String>
+    <system:String x:Key="OperBoxExportHeaderPotential">잠재</system:String>
+    <system:String x:Key="OperBoxExportYes">예</system:String>
+    <system:String x:Key="OperBoxExportNo">아니오</system:String>
     <!--  !오퍼레이터 인식  -->
     <!--  영상 인식  -->
     <system:String x:Key="VideoRecognition">영상 인식</system:String>
@@ -918,12 +964,12 @@ C:\\leidian\\LDPlayer9
     <system:String x:Key="MiniGame@PV">PV-불꽃놀이 집행위원회</system:String>
     <system:String x:Key="MiniGame@PVTip">선택한 스테이지부터 자동으로 클리어합니다. 첫 번째 스테이지를 선택한 경우에는 이벤트 페이지의 가장 왼쪽에서 시작하세요. 다른 스테이지를 선택한 경우에는 위치 보정을 위해 이전 스테이지에 먼저 들어갔다가 돌아오세요.</system:String>
     <system:String x:Key="MiniGame@SPA">위수 협의: 맹약</system:String>
-    <system:String x:Key="MiniGame@SPATip" xml:space="preserve">이벤트 메인 화면(｢독립 시뮬레이션｣ 위치)에서 임무 시작
+    <system:String x:Key="MiniGame@SPATip" xml:space="preserve">이벤트 메인 화면에서 임무 시작 (아래에 ｢독립 시뮬레이션｣)
 저장 데이터가 있는 경우 먼저 수동으로 포기해야 합니다
-｢위험 시뮬레이션｣까지만 테스트되었습니다
-더 높은 난이도를 클리어하여 ｢위험 시뮬레이션｣ 또는 ｢스탠다드 시뮬레이션｣이 보이지 않는 경우, ｢위험 시뮬레이션｣ 난이도를 수동으로 한 번 선택하세요
-｢스탠다드 시뮬레이션｣ 을 수동으로 클리어하면 점수를 더 빠르게 획득할 수 있습니다
-레벨 보상만 획득 가능하며, 조각 메달을 얻으려면 모든 ｢핵심 목표｣를 완료해야 합니다</system:String>
+｢험지 시뮬레이션｣까지만 테스트되었습니다
+더 높은 난이도를 클리어하여 ｢험지 시뮬레이션｣ 또는 ｢표준 시뮬레이션｣이 보이지 않는 경우, ｢험지 시뮬레이션｣ 난이도를 수동으로 한 번 선택하세요
+｢표준 시뮬레이션｣ 을 수동으로 클리어하면 점수를 더 빠르게 획득할 수 있습니다
+레벨 보상만 획득 가능하며, 조각 메달을 얻으려면 모든 ｢주요 목표｣를 완료해야 합니다</system:String>
     <system:String x:Key="MiniGame@OS">OS-카란 무역 연구개발부</system:String>
     <system:String x:Key="MiniGame@OSTip">이벤트 메인 화면에서 임무를 시작하세요 (오른쪽 아래에 ｢시작하기｣)</system:String>
     <system:String x:Key="MiniGame@RM-TR-1">재건 계획 RM-TR-1</system:String>
@@ -1043,17 +1089,16 @@ C:\\leidian\\LDPlayer9
         2. {key=MainStage}, {key=StoryCollection}, {key=SideStory}: 우측 하단에 파란색 ｢작전 개시｣ 버튼이 나타나는 화면에서 시작하세요.\n\n
         3. {key=SSS}: resource/copilot 폴더에 여러 파일이 있습니다. 먼저 수동으로 분대를 편성한 다음, 우측 하단에 ｢작전 개시｣ 버튼이 나타나는 화면에서 시작하세요. ｢{key=LoopTimes}｣와 함께 사용할 수 있습니다.\n\n
         4. {key=ParadoxSimulation}: 스킬 선택 후, ｢시뮬레이션 시작｣ 버튼이 나타나는 스킬 선택 화면에서 시작하세요. 1/2★ 오퍼레이터(스킬 없음)의 경우, 우측 하단에 ｢시뮬레이션 시작｣ 버튼이 있는 화면에서 시작하세요. ｢{key=UseCopilotList}｣를 사용하는 경우, {key=Operator} 목록의 ｢레벨/레어도｣ 탭에서 시작하세요.\n\n
-        5. 지원유닛을 사용할 때는 ｢{key=AutoSquad}｣ 및 ｢{key=UseCopilotList}｣를 끄고, 수동으로 오퍼레이터를 선택한 다음, 우측 하단에 ｢작전 개시｣ 버튼이 나타나는 분대 화면에서 시작하세요.\n\n
-        6. ｢선호｣로 표시된 오퍼레이터는 ｢{key=AutoSquad}｣ 인식 및 선택에 영향을 줄 수 있습니다. ｢{key=AutoSquad}｣ 사용 시, 선호 표시를 해제하거나 오류 발생 시 ｢{key=AutoSquad}｣를 끄고 안내에 따라 누락된 오퍼레이터를 수동으로 편성하는 것을 고려하세요.\n\n
-        7. 자동지휘 작업 공간에서, 입력 상자 오른쪽의 붙여넣기 버튼을 클릭하여 코드를 붙여넣을 수 있습니다:\n
-        ● 두 번째 버튼을 왼쪽 클릭 = 작업 추가.\n
-        ● 세 번째 버튼을 클릭 = 작업 목록 추가.\n\n
-        8. {key=UseCopilotList}:\n
-        ● 작업 선택 후, 아래의 스테이지 이름이 올바른지 확인하세요 (예: CV-EX-1).\n
-        ● 추가: 좌클릭은 일반, 우클릭은 하드 모드입니다.\n
-        ● 지우기: 좌클릭은 전체 삭제, 우클릭은 비활성 작업만 삭제합니다.\n
-        ● 목표 스테이지 이름이 보이는 화면에서 시작하세요. 챕터 간 이동은 지원되지 않습니다.\n
-        ● 이성 부족, 작전 실패, 또는 3성 클리어 실패 시 작전이 자동으로 중지됩니다.
+        5. ｢선호｣로 표시된 오퍼레이터는 ｢{key=AutoSquad}｣ 인식 및 선택에 영향을 줄 수 있습니다. ｢{key=AutoSquad}｣ 사용 시, 선호 표시를 해제하거나 오류 발생 시 ｢{key=AutoSquad}｣를 끄고 안내에 따라 누락된 오퍼레이터를 수동으로 편성하는 것을 고려하세요.\n\n
+        6. 자동지휘 작업 공간에서, 입력 상자 오른쪽의 붙여넣기 버튼을 클릭하여 코드를 붙여넣을 수 있습니다:\n
+        • 두 번째 버튼을 왼쪽 클릭 = 작업 추가.\n
+        • 세 번째 버튼을 클릭 = 작업 목록 추가.\n\n
+        7. {key=UseCopilotList}:\n
+        • 작업 선택 후, 아래의 스테이지 이름이 올바른지 확인하세요 (예: CV-EX-1).\n
+        • 추가: 좌클릭은 일반, 우클릭은 하드 모드입니다.\n
+        • 지우기: 좌클릭은 전체 삭제, 우클릭은 비활성 작업만 삭제합니다.\n
+        • 목표 스테이지 이름이 보이는 화면에서 시작하세요. 챕터 간 이동은 지원되지 않습니다.\n
+        • 이성 부족, 작전 실패, 또는 3성 클리어 실패 시 작전이 자동으로 중지됩니다.
     </system:String>
     <system:String x:Key="CopilotFileReadError">파일을 읽지 못했습니다!</system:String>
     <system:String x:Key="CopilotNoFound">해당 파일을 찾을 수 없습니다!</system:String>
@@ -1100,6 +1145,7 @@ C:\\leidian\\LDPlayer9
     <!--  !ErrorView  -->
     <!--  AsstProxy  -->
     <system:String x:Key="UpdateApplyFailed">업데이트 적용에 실패하여 현재 설치가 불완전할 수 있습니다. 전체 패키지를 다시 다운로드하고, 아래 안내에 따라 config, data 및 debug를 수동으로 옮겨 주세요.\n\n{key=FullPackageUpgradeTips}</system:String>
+    <system:String x:Key="UpdateApplyMissingUpdater">MAA.Updater.exe가 없어 외부 업데이트 프로그램을 시작할 수 없어 업데이트를 계속할 수 없습니다. 이번 업데이트는 취소되었습니다. 이 파일은 수동으로 삭제되었거나 보안 소프트웨어에 의해 차단 또는 삭제되었을 수 있습니다. 보안 소프트웨어가 원인이라면 해당 소프트웨어의 격리소를 확인해 파일을 복원하고, MAA가 있는 폴더를 해당 소프트웨어의 허용 목록에 추가한 뒤 다시 시도해 주세요.\n\n{key=FullPackageUpgradeTips}</system:String>
     <system:String x:Key="ResourceBroken">리소스 파일이 손상되었습니다. 전체 패키지를 다시 다운로드하세요.\n\n{key=FullPackageUpgradeTips}</system:String>
     <system:String x:Key="ReplaceAdbNotExists">ADB 파일이 존재하지 않습니다</system:String>
     <system:String x:Key="AdbDownloadFailedTitle">ADB 다운로드 실패</system:String>
@@ -1139,6 +1185,7 @@ C:\\leidian\\LDPlayer9
     <system:String x:Key="HasReturned">반환했습니다</system:String>
     <system:String x:Key="DropRecognitionError">드롭 인식 오류</system:String>
     <system:String x:Key="GiveUpUploadingPenguins">펭귄 물류에 업로드 불가</system:String>
+    <system:String x:Key="ReportSkippedForPcClient">PC 클라이언트에서는 커서가 드롭 아이템과 수량 인식을 가릴 수 있습니다. 잘못된 데이터가 데이터 풀을 오염시키지 않도록 이번 보고는 자동으로 건너뜁니다</system:String>
     <system:String x:Key="TheEx">EX 스테이지가 없어 중단되었습니다</system:String>
     <system:String x:Key="MissingOperators">다음 {key=Operator}들이 누락되었습니다:</system:String>
     <system:String x:Key="RecruitSupportOperator">지원유닛 추가: {0}</system:String>
@@ -1152,7 +1199,7 @@ C:\\leidian\\LDPlayer9
     <system:String x:Key="MedicineUsedTimesWithExpiring" xml:space="preserve">\n이성 회복제: {0},{1}(만료 예정)  </system:String>
     <system:String x:Key="StoneUsedTimes" xml:space="preserve">\n순오리지늄: {0}  </system:String>
     <system:String x:Key="MedicineUsed">이성 회복제를 사용했습니다</system:String>
-    <system:String x:Key="ExpiringMedicineUsed">48시간 이내 만료되는 이성 회복제를 사용했습니다</system:String>
+    <system:String x:Key="ExpiringMedicineUsed">{0}시간 이내 만료되는 이성 회복제를 사용했습니다</system:String>
     <system:String x:Key="StoneUsed">순오리지늄을 사용했습니다</system:String>
     <system:String x:Key="ActingCommandError">대리 지휘 오류 발생</system:String>
     <system:String x:Key="FightMissionFailedAndStop">대리 지휘 실패 횟수 초과로 작업을 중단합니다</system:String>
@@ -1219,6 +1266,7 @@ C:\\leidian\\LDPlayer9
     <system:String x:Key="ProductIncorrect">생산품이 구성과 맞지 않습니다.</system:String>
     <system:String x:Key="ProductUnknown">인식할 수 없는 생산품</system:String>
     <system:String x:Key="ProductChanged">생산품이 변경됨</system:String>
+    <system:String x:Key="ProductChangeFail">생산품 전환에 실패했습니다</system:String>
     <system:String x:Key="RecruitingResults" xml:space="preserve">공개모집 인식 결과: </system:String>
     <system:String x:Key="RecruitingTips">공개모집 팁</system:String>
     <system:String x:Key="RecruitmentOfStar">★{0} {key=Operator}를 모집했습니다!</system:String>
@@ -1282,10 +1330,9 @@ C:\\leidian\\LDPlayer9
     <system:String x:Key="AttachWindowFailed">AttachWindow 연결에 실패했습니다. 스크린샷/입력 방법 설정을 확인하세요</system:String>
     <system:String x:Key="UseAttachWindowTip">에뮬레이터나 휴대폰용 ADB 연결 대신 명일방주 PC 클라이언트에 Win32 창 바인딩을 사용합니다</system:String>
     <system:String x:Key="UseAttachWindowWarning" xml:space="preserve">PC 연결 (실험적 기능이며 안정성은 보장되지 않습니다)
-MAA Team의 개발 인력이 제한되어 있어 PC 지원은 전담 관리가 부족하며, 기능 오류나 불안정한 동작이 발생할 수 있습니다:
-● 문제 발생 시 신속한 대응이나 수정이 어려울 수 있습니다
-● 정상 작동하지 않을 경우, ADB 모드로 Android 에뮬레이터 또는 모바일 기기 연결을 권장합니다
-● PC 지원 개선을 위한 개발자의 Pull Request를 진심으로 환영합니다
+MAA Team의 개발 여력이 제한되어 있어 이 기능은 커뮤니티에서 유지보수하고 있으며, MAA Team이 지속적으로 지원하는 기능은 아닙니다. 기능이나 안정성이 기대에 못 미칠 수 있고, 문제가 발생해도 빠르게 수정되지 않을 수 있습니다.
+사용에 지장을 주는 문제가 있다면, 더 안정적인 사용을 위해 ADB 모드로 Android 에뮬레이터 또는 모바일 기기에 연결하는 것을 권장합니다.
+또한 PC 지원 개선에 기여할 수 있는 개발자의 Pull Request는 언제나 환영합니다.
 
 사용 전 확인 사항:
 1. MAA를 관리자 권한으로 실행해야 합니다
@@ -1434,7 +1481,53 @@ DEBUG 디렉토리에 저장된 이미지는 수량 제한이 있으며 초과 �
     <system:String x:Key="AnnouncementNotFinishedConfirm3">계속 누르네</system:String>
     <!--  !Announcement  -->
     <!--  Reclamation  -->
-    <system:String x:Key="ReclamationEarlyTip" xml:space="preserve">
+    <system:String x:Key="ReclamationTipRelaunchAnchorRA1" xml:space="preserve">
+수익 참고: 회당 약 159토큰 + 통괄 포인트, 소요 시간 약 2분 10초
+
+오퍼레이터 요구 사항: 없음
+
+사전 조건: 메인 스토리에서 RA-1을 클리어해야 합니다
+
+맵에서 RA-1을 열고 오른쪽 아래에 "건설 시작"이 나타나면 작업을 시작하여 자동 순환할 수 있습니다
+
+참고: 초기 추가 아이템 휴대 관련 기술을 해제한 경우, 기지 내에서 초기 추가 아이템을 휴대하게 하는 시설(식품 공급소, 음료 공급소, 축사 등)을 철거하세요
+
+작업 흐름：정경세작, 건설, 자원 납품, 결제를 자동 실행</system:String>
+    <system:String x:Key="ReclamationTipRelaunchAnchorRA4" xml:space="preserve">
+수익 참고: 회당 약 417 토큰 + 통괄 포인트, 소요 시간 약 1분 40초
+
+오퍼레이터 요구 사항: 비샤델 (서포트 사용 가능)
+
+사전 조건:
+1. 메인 스토리를 진행하여 RA-4를 클리어한 상태로 만듭니다.
+2. "전략 계획 경영"을 해금합니다.
+3. 자신이 비샤델을 보유한 경우, 수동으로 스테이지를 열고 한 번 편성합니다. 비샤델보다 코스트가 낮은 임의의 5명의 오퍼레이터 + 비샤델로 하고, 비샤델을 6번째 슬롯(마지막으로 선택하는 자리)에 배치합니다. 그 후 모집을 확정하고, 이번 건설을 포기한 후 "건설 시작"에서 시작합니다.
+4. 서포트 비샤델을 사용하는 경우, 비샤델이 스나이퍼 서포트 첫 페이지에 있는지 확인합니다(친구 고려). 수동으로 스테이지를 열어 비샤델보다 코스트가 낮은 임의의 5명의 오퍼레이터를 편성하고, 6번째 슬롯에 서포트 비샤델을 선택한 후 모집을 확정합니다. 그 후 이번 건설을 포기하고 "건설 시작"에서 시작합니다 (앞의 5개 슬롯에 오퍼레이터가 있고 6번째는 비어 있는지 확인).
+
+맵에서 RA-4를 열고 오른쪽 아래에 "건설 시작"이 나타나면 작업을 시작하여 자동 순환할 수 있습니다
+
+참고: 초기 추가 아이템 휴대 관련 기술을 해제한 경우, 기지 내에서 초기 추가 아이템을 휴대하게 하는 시설(식품 공급소, 음료 공급소, 축사 등)을 철거하세요
+
+작업 흐름: "경영 계획"으로 얻은 적금을 사용하여 지역을 해금하고, 비샤델로 보스 처치 임무를 완료합니다。
+    </system:String>
+    <system:String x:Key="ReclamationTipRelaunchAnchorRA15" xml:space="preserve">
+수익 참고: 회당 약 500 토큰 + 통괄 포인트, 소요 시간 약 3분
+
+오퍼레이터 요구 사항: 성령초설(서포트 유닛 사용 가능)
+
+사전 조건:
+1. 메인 스토리에서 RA-15를 클리어해야 합니다
+2. 성령초설을 보유한 경우, 직접 RA-15를 열고 한 번 편성한다. 선봉 5명(육성 요구 없음) + 성령초설을 마지막에 선택하고 편성을 저장한 뒤 스테이지를 나간다
+3. 서포트의 성령초설을 사용하는 경우, 성령초설이 술사 서포트 첫 페이지에 있는지 확인한다 (친구 설정 권장)
+
+맵에서 RA-15를 열고 오른쪽 아래에 "건설 시작"이 나타나면 작업을 시작하여 자동 순환할 수 있습니다
+
+참고: 초기 추가 아이템 휴대 관련 기술을 해제한 경우, 기지 내에서 초기 추가 아이템을 휴대하게 하는 시설(식품 공급소, 음료 공급소, 축사 등)을 철거하세요
+
+작업 흐름： 서포트 오퍼레이터를 사용하여 60킬 미션을 자동 실행
+    </system:String>
+    <system:String x:Key="ReclamationTipFire">이 이벤트는 종료되어 사용할 수 없습니다</system:String>
+    <system:String x:Key="ReclamationTipTales" xml:space="preserve">
 현재 생존 연산 기능은 초기 단계이며, 다음 사항에 주의하세요:
 
  세이브 X: 스테이지 반복 (주의: 기존 세이브 데이터가 삭제될 수 있습니다)
@@ -1470,15 +1563,22 @@ MAA를 독립된 새 폴더에 압축 해제하거나, MAA에 속하지 않는 D
 여러 개의 MAA를 동시에 실행하려면 MAA 전체 폴더를 복사한 뒤, 같은 adb를 사용하되 연결 주소는 다르게 설정하여 서로 다른 경로에서 실행하세요.
     </system:String>
     <system:String x:Key="SoftwareLocationWarning">현재 소프트웨어 위치에서는 데이터를 저장할 수 없어 설정이 손실되거나 실행 오류가 발생할 수 있습니다. 쓰기 가능한 폴더로 이동하세요. 시스템 보호 폴더(예: Program Files, System32 또는 Windows 폴더)에 두지 마세요.</system:String>
-    <system:String x:Key="RunningInTempDirectoryError">MAA는 압축 파일이나 시스템 임시 디렉터리에서 실행할 수 없습니다. MAA를 압축 파일에서 완전히 해제하거나, 일반 폴더로 이동한 후 실행해 주세요.</system:String>
+    <system:String x:Key="UnsupportedInstallLocationError" xml:space="preserve">MAA는 임시 디렉터리, 드라이브 루트, 또는 시스템/사용자 공용 디렉터리 같은 현재 설치 위치에서 직접 실행할 수 없습니다.
+
+현재 설치 디렉터리: {0}
+감지된 비지원 위치: {1}
+
+이 위치들은 계층이 너무 높아 파일 덮어쓰기, 설정 저장 실패, 데이터 혼선을 일으킬 수 있습니다. D:\\MAA\\ 같은 전용 폴더로 옮긴 뒤 다시 실행해 주세요.</system:String>
     <!--  !Boot  -->
     <!--  SimpleEncryptionHelper  -->
     <system:String x:Key="EncryptionError">암호화 또는 복호화에 실패했습니다. 관련 설정을 다시 구성해 주세요. 그렇지 않으면 암호화된 내용이 설정 파일에 그대로 저장됩니다.</system:String>
     <!--  !SimpleEncryptionHelper  -->
     <!--  TimeOutTimer  -->
-    <system:String x:Key="TaskTimeoutMinutes">작업 타임아웃 시간 (분)</system:String>
+    <!-- <system:String x:Key="TaskTimeoutMinutes">작업 타임아웃 시간 (분)</system:String> -->
     <system:String x:Key="ReminderIntervalMinutes">알림 간격 (분)</system:String>
-    <system:String x:Key="TaskTimeoutWarning">작업이 {0}분을 초과하여 {1}분째 실행 중입니다\n장시간 로그의 갱신이 없다면 수동 조작이 필요할 수 있습니다</system:String>
+    <system:String x:Key="StallTimeoutMinutes">로그 출력 정지 타임아웃 (분)</system:String>
+    <system:String x:Key="StallTimeoutEnabled">정지 감지 활성화</system:String>
+    <system:String x:Key="TaskStallWarning">작업 로그 출력이 {0}분 동안 업데이트되지 않았습니다(현재 {1}분 정지). 오랫동안 로그 출력이 없으면 수동 개입이 필요할 수 있습니다.</system:String>
     <!--  !TimeOutTimer  -->
     <!--  Achievement  -->
     <system:String x:Key="AchievementCelebrate">🎉 도전과제 달성</system:String>
@@ -1543,6 +1643,9 @@ MAA를 독립된 새 폴더에 압축 해제하거나, MAA에 속하지 않는 D
     <system:String x:Key="Achievement.Martian.Description">저만 과거에 있는 것 같아요... 업데이트 좀 해주세요!</system:String>
     <system:String x:Key="Achievement.Martian.Conditions">리소스 또는 버전이 현재로부터 3개월 초과</system:String>
     <system:String x:Key="Achievement.Martian.ConditionsTip">리소스 또는 버전이 현재로부터 {0}개월 초과</system:String>
+
+    <system:String x:Key="ConfigurationRecoveredNotification">대상 구성 "{0}"이(가) 없어 현재 구성에서 복사했습니다. 모든 구성을 확인해 주세요</system:String>
+    <system:String x:Key="ConfigurationBrokenCaption">구성 오류</system:String>
 
     <system:String x:Key="Achievement.AnnouncementStubbornClick.Title">고집불통</system:String>
     <system:String x:Key="Achievement.AnnouncementStubbornClick.Description">수차례 안내를 받았음에도 불구하고 공지를 보지 않고 닫기를 선택했습니다.</system:String>

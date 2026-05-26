@@ -45,7 +45,7 @@
                     Width="250"
                     HorizontalContentAlignment="Center"
                     hc:BorderElement.CornerRadius="4,0,0,4"
-                    hc:InfoElement.TitleWidth="0"
+                    hc:TitleElement.TitleWidth="0"
                     hc:ListBoxAttach.SelectedItems="{Binding EnabledExternalNotificationProviders}"
                     ItemsSource="{Binding ExternalNotificationProvidersShow}" />
                 <Grid>
@@ -91,12 +91,12 @@
                     VerticalAlignment="Top"
                     Content="{DynamicResource ExternalNotificationSendWhenError}"
                     IsChecked="{Binding ExternalNotificationSendWhenError}" />
-                <CheckBox
-                    Margin="5"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Content="{DynamicResource ExternalNotificationSendWhenTimeout}"
-                    IsChecked="{Binding ExternalNotificationSendWhenTimeout}" />
+            <CheckBox
+                Margin="5"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Content="{DynamicResource ExternalNotificationSendWhenStalled}"
+                IsChecked="{Binding ExternalNotificationSendWhenStalled}" />
             </StackPanel>
         </StackPanel>
 

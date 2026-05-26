@@ -118,7 +118,7 @@ Whether to enable this task.
 Stage name, by default empty, recognizes current/last stage. Editing in run-time is not supported.  
 Currently supported stages for navigation include:
 
-- All mainline stages. You can add `-NORMAL` or `-HARD` at the end of the stage to switch between standard or challenge mode.
+- All mainline stages. You can add `-NORMAL` or `-HARD` at the end of the stage to switch difficulty: Chapters 10-14 map to Standard/Adverse, while Chapters 15+ map to Normal/Raid.
 - For LMD and Battle Record stages 5/6, must input `CE-6` / `LS-6`. MAA will automatically switch to stage 5 if stage 6 cannot be delegated.
 - Skill Summary, Voucher, and Carbon stage 5, must input `CA-5` / `AP-5` / `SK-5`.
 - All chip stages. Must input complete stage code, e.g. `PR-A-1`.
@@ -911,32 +911,44 @@ Whether to enable this task.
 ::: field name="enable" type="boolean" optional default="true"  
 Whether to enable this task.  
 :::  
-::: field name="theme" type="string" optional default="Fire"  
+::: field name="theme" type="string" optional default="Tales"  
 Theme.
 <br>
-`Fire` - _Fire Within the Sand_
+`Fire` - _Fire Within the Sand_ (Closed)
 <br>
 `Tales` - _Tales Within the Sand_
+<br>
+`RelaunchAnchor` - _Relaunch Anchor_
 :::  
 ::: field name="mode" type="number" optional default="0"  
-Mode.
+Mode. Supported modes vary by theme:
 <br>
-`0` - Farm badges & construction pts (exiting the stage immediately).
+**Tales:**
 <br>
-`1` - Fire Within the Sand: Farm Crude Gold (forging Gold at headquarter after purchasing water); Tales Within the Sand: Automatically craft items and load to earn currency.
+`0` - No save, farm prosperity points by entering and exiting stages.
+<br>
+`1` - With save, farm currency by crafting support items.
+<br>
+**RelaunchAnchor:**
+<br>
+`16` (`RA1`) - RA-1, automatically execute intensive farming, construction, resource delivery, and settlement loop.
+<br>
+`32` (`RA15`) - RA-15, complete the 60-kill mission with Civilight Eterna.
+<br>
+`48` (`RA4`) - RA-4, Use the Gold from Strategy Planning Management to unlock areas, and use Wis'adel to complete the boss elimination mission.
 :::  
 ::: field name="tools_to_craft" type="array<string>" optional default="[&quot;荧光棒&quot;]"  
-Automatically crafted items. Suggested to fill in the substring.  
+Automatically crafted items. Suggested to fill in the substring. Only effective for Tales theme.  
 :::  
 ::: field name="increment_mode" type="number" optional default="0"  
-Click type.
+Click type. Only effective for Tales theme.
 <br>
 `0` - Rapid Click
 <br>
 `1` - Long Press
 :::  
 ::: field name="num_craft_batches" type="number" optional default="16"  
-Maximum number of craft batches per session.  
+Maximum number of craft batches per session. Only effective for Tales theme.  
 :::  
 ::::
 
@@ -1159,5 +1171,8 @@ Whether to enable AdbLite or not. Options: "0" | "1". Enum value: 4.
 :::  
 ::: field name="KillAdbOnExit" type="boolean" optional  
 Release Adb on exit. Options: "0" | "1". Enum value: 5.  
+:::  
+::: field name="ClientType" type="string" optional  
+Client channel. Most connection configs do not need this option. Set it before `AsstConnect` / `AsstAsyncConnect` only when the selected `config` uses `[PackageName]` in commands executed during connect. In the built-in configs, only `Androws` and `WSA` currently require it for `displayId` lookup. This does not replace the `client_type` task parameter used by StartUp / CloseDown tasks. Enum value: 6.  
 :::  
 ::::

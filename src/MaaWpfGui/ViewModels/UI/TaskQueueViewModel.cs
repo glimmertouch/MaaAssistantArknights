@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -180,6 +179,11 @@ public class TaskQueueViewModel : Screen
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)
             {
+                foreach (var item in e.OldItems?.OfType<TaskItemViewModel>() ?? [])
+                {
+                    (item as IDisposable)?.Dispose(); // 释放事件订阅; 暂未支持TaskItemViewModels.clear()
+                }
+
                 if (e.OldStartingIndex >= 0 && e.OldStartingIndex < ConfigFactory.CurrentConfig.TaskQueue.Count)
                 {
                     TaskSettingVisibilities.SetTaskSettingVisible(ConfigFactory.CurrentConfig.TaskQueue[e.OldStartingIndex], false);
@@ -600,17 +604,17 @@ public class TaskQueueViewModel : Screen
     {
         _runningState = RunningState.Instance;
         _runningState.StateChanged += (_, e) => {
-            Idle = e.Idle;
-            Inited = e.Inited;
-            Stopping = e.Stopping;
+            Idle = e.NewState.Idle;
+            Inited = e.NewState.Inited;
+            Stopping = e.NewState.Stopping;
 
-            Instances.SettingsViewModel.Idle = e.Idle;
-            if (!e.Idle)
+            Instances.SettingsViewModel.Idle = e.NewState.Idle;
+            if (!e.NewState.Idle)
             {
                 Instances.Data.ClearCache();
             }
         };
-        _runningState.TimeoutOccurred += RunningState_TimeOut;
+        _runningState.StallOccurred += RunningState_Stalled;
 
         if (Instances.VersionUpdateDialogViewModel.IsDebugVersion() || File.Exists("DEBUG") || File.Exists("DEBUG.txt"))
         {
@@ -619,21 +623,17 @@ public class TaskQueueViewModel : Screen
         }
     }
 
-    private void RunningState_TimeOut(object? sender, string message)
+    private void RunningState_Stalled(object? sender, string message)
     {
-        Execute.OnUIThread(() => {
-            AddLog(message, UiLogColor.Warning);
-            ToastNotification.ShowDirect(message);
-            if (!SettingsViewModel.ExternalNotificationSettings.ExternalNotificationSendWhenTimeout)
-            {
-                return;
-            }
-
+        AddLog(message, UiLogColor.Warning, notifyActivity: false);
+        ToastNotification.ShowDirect(message);
+        if (SettingsViewModel.ExternalNotificationSettings.ExternalNotificationSendWhenStalled)
+        {
             var lastLogs = LogItemViewModels
                 .TakeLast(5)
                 .Aggregate(string.Empty, (current, logItem) => current + $"[{logItem.Time}][{logItem.Color}]{logItem.Content}\n");
             ExternalNotificationService.Send(message, lastLogs);
-        });
+        }
     }
 
     protected override void OnInitialActivate()
@@ -993,7 +993,7 @@ public class TaskQueueViewModel : Screen
             var task = ConfigFactory.CurrentConfig.TaskQueue.ElementAt(i);
             if (task is not null)
             {
-                taskqueue.Add(new TaskItemViewModel(task.NameDisplay, task.IsEnable) { Index = i });
+                taskqueue.Add(new TaskItemViewModel(task.NameOrTaskType, task.IsEnable) { Index = i });
             }
         }
 
@@ -1178,6 +1178,7 @@ public class TaskQueueViewModel : Screen
     /// <param name="fetchLatestImage">Whether to force fetching a fresh screenshot instead of using cache.</param>
     /// <param name="useCardImageAsToolTip">Whether to use the current card's image as toolTip.</param>
     /// <param name="splitMode">Whether to split cards before/after this log.</param>
+    /// <param name="notifyActivity">Whether this log should notify activity (and reset idle timer).</param>
     public void AddLog(string? content,
         string color = UiLogColor.Trace,
         string weight = "Regular",
@@ -1185,8 +1186,14 @@ public class TaskQueueViewModel : Screen
         bool updateCardImage = false,
         bool fetchLatestImage = false,
         bool useCardImageAsToolTip = false,
-        LogCardSplitMode splitMode = LogCardSplitMode.None)
+        LogCardSplitMode splitMode = LogCardSplitMode.None,
+        bool notifyActivity = true)
     {
+        if (notifyActivity)
+        {
+            RunningState.Instance.NotifyOutputActivity();
+        }
+
         bool isEmpty = string.IsNullOrEmpty(content);
         bool needsBeforeSplit = splitMode == LogCardSplitMode.Before || splitMode == LogCardSplitMode.Both;
         bool needsAfterSplit = splitMode == LogCardSplitMode.After || splitMode == LogCardSplitMode.Both;
@@ -1254,7 +1261,7 @@ public class TaskQueueViewModel : Screen
     /// <summary>
     /// Clears log.
     /// </summary>
-    private void ClearLog()
+    public void ClearLog()
     {
         Execute.OnUIThread(() => {
             LogItemViewModels.Clear();
@@ -1326,7 +1333,7 @@ public class TaskQueueViewModel : Screen
         if (Activator.CreateInstance(taskName) is BaseTask task)
         {
             ConfigFactory.CurrentConfig.TaskQueue.Add(task);
-            TaskItemViewModels.Add(new TaskItemViewModel(task.NameDisplay));
+            TaskItemViewModels.Add(new TaskItemViewModel(task.NameOrTaskType));
             AchievementTrackerHelper.Instance.Unlock(AchievementIds.QueueExpansion);
             AchievementTrackerHelper.Instance.TrackManualTaskAddition(
                 task.TaskType.ToString(),
@@ -1367,7 +1374,7 @@ public class TaskQueueViewModel : Screen
             if (taskItem.Index < ConfigFactory.CurrentConfig.TaskQueue.Count)
             {
                 ConfigFactory.CurrentConfig.TaskQueue[taskItem.Index].Name = newName;
-                taskItem.Name = ConfigFactory.CurrentConfig.TaskQueue[taskItem.Index].NameDisplay;
+                taskItem.Name = ConfigFactory.CurrentConfig.TaskQueue[taskItem.Index].NameOrTaskType;
                 AddLog(LocalizationHelper.GetStringFormat("TaskRenamed", newName), UiLogColor.Info);
             }
             else
@@ -1424,7 +1431,7 @@ public class TaskQueueViewModel : Screen
 
         var taskType = ConfigFactory.CurrentConfig.TaskQueue[taskItem.Index].TaskType;
         var result = MessageBoxHelper.Show(
-            string.Format(LocalizationHelper.GetString("ConfirmDeleteTaskMessage"), $"{taskItem.Index + 1}-{LocalizationHelper.GetString(taskType.ToString())}", taskItem.Name),
+            LocalizationHelper.GetStringFormat("ConfirmDeleteTaskMessage", $"{taskItem.Index + 1}-{LocalizationHelper.GetString(taskType.ToString())}", taskItem.Name),
             LocalizationHelper.GetString("ConfirmDeleteTask"),
             MessageBoxButton.YesNo,
             MessageBoxImage.Question);
@@ -1435,7 +1442,7 @@ public class TaskQueueViewModel : Screen
             if (index < ConfigFactory.CurrentConfig.TaskQueue.Count)
             {
                 TaskItemViewModels.RemoveAt(index);
-                AddLog(string.Format(LocalizationHelper.GetString("TaskDeleted"), taskItem.Name), UiLogColor.Info);
+                AddLog(LocalizationHelper.GetStringFormat("TaskDeleted", taskItem.Name), UiLogColor.Info);
                 AchievementTrackerHelper.Instance.Unlock(AchievementIds.QueueSimplifier);
             }
         }
@@ -1753,8 +1760,8 @@ public class TaskQueueViewModel : Screen
         if (maxTimeInterval > 90)
         {
             AddLog(
-                string.Format(
-                    LocalizationHelper.GetString("Achievement.Martian.ConditionsTip"),
+                LocalizationHelper.GetStringFormat(
+                    "Achievement.Martian.ConditionsTip",
                     Math.Round(maxTimeInterval / 30, 1)),
                 UiLogColor.Error);
         }
@@ -1817,7 +1824,7 @@ public class TaskQueueViewModel : Screen
             _logger.Information("Index {Index}, Type {TaskType}, Name {TaskName}, IsEnable {IsEnable}",
                 index,
                 item.TaskType,
-                item.NameDisplay,
+                item.NameOrTaskType,
                 item.IsEnable);
             if (!IsTaskEnable(item))
             {
@@ -1836,11 +1843,11 @@ public class TaskQueueViewModel : Screen
                         break;
                     case false:
                         taskRet = false;
-                        AddLog(LocalizationHelper.GetStringFormat("TaskAppend.Error", LocalizationHelper.GetString(item.TaskType.ToString()), item.NameDisplay), UiLogColor.Error);
+                        AddLog(LocalizationHelper.GetStringFormat("TaskAppend.Error", LocalizationHelper.GetString(item.TaskType.ToString()), item.NameOrTaskType), UiLogColor.Error);
                         SetTaskStatus(index, TaskItemStatus.Error);
                         break;
                     case null:
-                        AddLog(LocalizationHelper.GetStringFormat("TaskAppend.Skip", LocalizationHelper.GetString(item.TaskType.ToString()), item.NameDisplay), UiLogColor.Info);
+                        AddLog(LocalizationHelper.GetStringFormat("TaskAppend.Skip", LocalizationHelper.GetString(item.TaskType.ToString()), item.NameOrTaskType), UiLogColor.Info);
                         SetTaskStatus(index, TaskItemStatus.Skipped);
                         break;
                 }
@@ -1848,7 +1855,7 @@ public class TaskQueueViewModel : Screen
             catch (Exception ex)
             {
                 taskRet = false;
-                AddLog(LocalizationHelper.GetStringFormat("TaskAppend.Error", LocalizationHelper.GetString(item.TaskType.ToString()), item.NameDisplay) + "\n" + ex.Message, UiLogColor.Error);
+                AddLog(LocalizationHelper.GetStringFormat("TaskAppend.Error", LocalizationHelper.GetString(item.TaskType.ToString()), item.NameOrTaskType) + "\n" + ex.Message, UiLogColor.Error);
             }
         }
 

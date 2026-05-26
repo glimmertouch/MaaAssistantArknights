@@ -119,7 +119,7 @@ Bilibili 서버: `张三`인 경우 `张三`, `张`, `三` 입력 가능
 <br>
 `"1-7"`, `"S3-2"` 등 모든 메인 스토리 스테이지 지원
 <br>
-스테이지명 끝에 `Normal`/`Hard`를 입력하여 일반/하드 난이도 전환 가능
+스테이지명 끝에 `-NORMAL`/`-HARD`를 추가해 난이도 전환 가능 (10-14장은 표준/재앙, 15장 이후는 일반/험지)
 <br>
 섬멸 작전의 경우 반드시 `"Annihilation"` 입력
 <br>
@@ -899,32 +899,44 @@ Sarkaz 테마, Investment 모드, "연금술 분대" 또는 "지원 분대"일 �
 ::: field name="enable" type="boolean" optional default="true"  
 본 작업 활성화 여부  
 :::  
-::: field name="theme" type="string" optional default="Fire"  
+::: field name="theme" type="string" optional default="Tales"  
 테마
 <br>
-`Fire` - _모래 속의 불_
+`Fire` - _모래 속의 불_（종료）
 <br>
-`Tales` - _사막 이야기_  
+`Tales` - _사막 이야기_
+<br>
+`RelaunchAnchor` - _리런치 앵커_  
 :::  
 ::: field name="mode" type="number" optional default="0"  
-모드
+모드. 테마마다 지원하는 모드가 다릅니다:
 <br>
-`0` - 점수 및 건설 포인트 파밍, 전투 진입 후 바로 포기
+**Tales（사막 이야기）：**
 <br>
-`1` - 모래 속의 불: 적금 파밍, 연락원에게 물 구매 후 기지에서 주조; 사막 이야기: 자동 아이템 제작 및 로드 반복으로 화폐 파밍  
+`0` - 세이브 없음, 스테이지 반복으로 번영의 선물 획득。
+<br>
+`1` - 세이브 있음, 도구 제작으로 번영의 선물 획득。
+<br>
+**RelaunchAnchor（리런치 앵커）：**
+<br>
+`16` (`RA1`) - RA-1, 정경세작→건설→자원 납품→결산 자동 루프。
+<br>
+`32` (`RA15`) - RA-15, 시빌라이트 에테르나로 60킬 미션 달성。
+<br>
+`48` (`RA4`) - RA-4, "경영 계획"으로 얻은 적금을 사용하여 지역을 해금하고, 비샤델로 보스 처치 임무를 완료합니다。
 :::  
 ::: field name="tools_to_craft" type="array<string>" optional default="[&quot;荧光棒&quot;]"  
-자동 제작 아이템, 부분 문자열 입력 권장  
+자동 제작 아이템, 부분 문자열 입력 권장. Tales 테마에서만 유효  
 :::  
 ::: field name="increment_mode" type="number" optional default="0"  
-클릭 유형
+클릭 유형. Tales 테마에서만 유효
 <br>
 `0` - 연타
 <br>
 `1` - 꾹 누르기
 :::  
 ::: field name="num_craft_batches" type="number" optional default="16"  
-1회 최대 제작 배치 수  
+1회 최대 제작 배치 수. Tales 테마에서만 유효  
 :::  
 ::::
 
@@ -1147,5 +1159,8 @@ AdbLite 사용 여부. 옵션: "0" 끄기, "1" 켜기. 열거값: 4
 :::  
 ::: field name="KillAdbOnExit" type="boolean" optional  
 종료 시 ADB 프로세스 종료 여부. 옵션: "0" 끄기, "1" 켜기. 열거값: 5  
+:::  
+::: field name="ClientType" type="string" optional  
+클라이언트 종류(게임 채널). 대부분의 연결 설정에서는 필요하지 않습니다. `AsstConnect` / `AsstAsyncConnect` 에 전달하는 `config` 가 연결 단계에서 실행되는 명령에 `[PackageName]` 을 사용할 때만, 연결 전에 `AsstSetInstanceOption(..., ClientType, ...)` 를 호출해 설정해야 합니다. 현재 내장 설정 중에서는 `Androws` 와 `WSA` 의 `displayId` 조회만 이 값에 의존합니다. 이 옵션은 StartUp / CloseDown 등의 작업 파라미터 `client_type` 를 대체하지 않습니다. 열거값: 6  
 :::  
 ::::

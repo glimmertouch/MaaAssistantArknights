@@ -241,6 +241,7 @@
     "14@EnterEpisodeNew": {},
     "15@EnterEpisodeNew": {},
     "16@EnterEpisodeNew": {},
+    "17@EnterEpisodeNew": {},
     "EnterEpisodeNew-Click": {
         "algorithm": "OcrDetect",
         "action": "ClickSelf",
@@ -367,6 +368,22 @@
         "template": ["NormalDifficulty.png", "NormalDifficulty-Chapter15.png"],
         "next": []
     },
+    "ChangeToNormalDifficulty": {
+        "doc": ["常规", "15章常规"],
+        "template": ["NormalDifficulty.png", "NormalDifficulty-Chapter15.png"],
+        "action": "ClickSelf",
+        "maskRange": [0, 220],
+        "roi": [600, 610, 130, 110],
+        "maxTimes": 3,
+        "next": ["NormalConfirm", "#self"]
+    },
+    "NormalConfirm": {
+        "baseTask": "ChangeToNormalDifficulty",
+        "action": "DoNothing",
+        "maskRange": [0, 220],
+        "template": ["RaidDifficulty.png", "RaidDifficulty-Chapter15.png"],
+        "next": []
+    },
     "EpisodeNew": {
         "Doc": "base_task",
         "algorithm": "JustReturn",
@@ -449,6 +466,10 @@
         "baseTask": "16@EpisodeNew",
         "sub": ["ToChapterNew@StageTheme"]
     },
+    "Episode17": {
+        "baseTask": "17@EpisodeNew",
+        "sub": ["ToChapterNew@StageTheme"]
+    },
     "1-7": {
         "algorithm": "JustReturn",
         "sub": ["Episode1"],
@@ -518,17 +539,12 @@
     "StageQueue@CheckPrts": {
         "algorithm": "JustReturn",
         "maxTimes": 3,
-        "next": ["StageQueue@UsePrtsSuccess", "StageQueue@UsePrts"]
+        "next": ["UsePrtsSuccessCheck", "StageQueue@UsePrts"]
     },
     "StageQueue@UsePrts": {
         "Doc": "执行Prts激活",
         "template": "UsePrts.png",
         "next": ["StageQueue@CheckPrts"]
-    },
-    "StageQueue@UsePrtsSuccess": {
-        "Doc": "检查代理激活没有，roi引用UnableToAgent2",
-        "template": "UsePrtsSuccess.png",
-        "roi": [985, 523, 159, 165]
     },
     "StageQueue": {
         "baseTask": "Fight",
@@ -711,7 +727,9 @@
             ["八.*海铃", "八幡海铃"],
             [".*英调香师", "撷英调香师"],
             ["矿石.*杀手.*", "矿石“杀手”"],
-            [".*涤火杰西卡", "涤火杰西卡"]
+            [".*涤火杰西卡", "涤火杰西卡"],
+            ["GALLU.*", "GALLUS²"],
+            ["凯尔希.*思衡托", "凯尔希·思衡托"]
         ]
     },
     "SwitchAccount@StartUpBegin": {
@@ -1161,7 +1179,14 @@
         "templThreshold": 0.9,
         "action": "ClickSelf",
         "roi": [900, 70, 380, 400],
-        "maskRange": [1, 255]
+        "maskRange": [1, 255],
+        "next": [
+            "#self",
+            "UsePrts-AnnihilationSuccessCheck",
+            "UsePrts-AnnihilationCheck",
+            "UsePrtsSuccessCheck",
+            "Annihilation@UnableToAgent2"
+        ]
     },
     "StageBegin": {
         "algorithm": "JustReturn",
@@ -1194,7 +1219,9 @@
     "UsePrts": {
         "action": "ClickSelf",
         "roi": [1000, 550, 280, 90],
-        "next": ["UsePrts-Annihilation", "StartButton1"]
+        "exceededNext": ["UsePrtsSuccessCheck"],
+        "maxTimes": 10,
+        "next": ["#self", "UsePrts-Annihilation", "StartButton1"]
     },
     "NotUsePrts": {
         "action": "ClickSelf",
@@ -1204,7 +1231,36 @@
         "Doc": "剿灭的“全权委托”按钮",
         "action": "ClickSelf",
         "roi": [877, 532, 183, 123],
+        "exceededNext": ["UsePrts-AnnihilationSuccess"],
+        "maxTimes": 10,
+        "next": ["#self", "UsePrts-AnnihilationSuccess"]
+    },
+    "UsePrts-AnnihilationSuccess": {
+        "Doc": "检查全权代理是否激活",
+        "roi": [938, 527, 156, 133],
         "next": ["StartButton1"]
+    },
+    "UsePrts-AnnihilationCheck": {
+        "baseTask": "UsePrts-Annihilation",
+        "template": "UsePrts-Annihilation.png",
+        "action": "DoNothing",
+        "exceededNext": [],
+        "next": []
+    },
+    "UsePrts-AnnihilationSuccessCheck": {
+        "baseTask": "UsePrts-AnnihilationSuccess",
+        "template": "UsePrts-AnnihilationSuccess.png",
+        "next": []
+    },
+    "UsePrtsSuccessCheck": {
+        "Doc": "检查代理激活没有",
+        "baseTask": "UnableToAgent2",
+        "template": "UsePrtsSuccess.png",
+        "next": []
+    },
+    "Annihilation@UnableToAgent2": {
+        "template": "UnableToAgent2.png",
+        "next": []
     },
     "UsePrts-StageSN": {
         "Doc": "三周年活动关卡“愚人号”代理指挥按钮",
@@ -1296,11 +1352,17 @@
         "specificRect_Doc": "避免第二次点击时点到StartButton2",
         "specificRect": [1260, 650, 1, 1]
     },
+    "AnnihilationPrtsRecordConfirm": {
+        "action": "ClickSelf",
+        "preDelay": 500,
+        "roi": [600, 630, 100, 100],
+        "next": ["EndOfActionAnnihilation", "EndOfAction"]
+    },
     "AnnihilationConfirm": {
         "action": "ClickSelf",
         "roi": [992, 584, 288, 136],
         "onErrorNext": ["Stop"],
-        "next": ["EndOfActionAnnihilation", "EndOfAction"]
+        "next": ["CheckLevelUp", "EndOfActionAnnihilation", "EndOfAction", "AnnihilationConfirm@LoadingText"]
     },
     "StageSNFlag": {
         "template": "StageSNReturnFlag.png",
@@ -1360,6 +1422,12 @@
         "reduceOtherTimes": ["ClickCornerAfterPRTS*10"],
         "next": ["PRTS#next", "WaitAfterPRTS@LoadingText", "WaitAfterPRTS@LoadingIcon", "ClickCornerAfterPRTS"]
     },
+    "CheckLevelUp": {
+        "doc": "跳过可能出现的等级提升界面。另外还有个金圈升级动画的界面，可能还需要一次点击。很难验证，先把这个页面点了",
+        "action": "ClickSelf",
+        "roi": [1000, 250, 270, 200],
+        "next": ["AnnihilationPrtsRecordConfirm", "EndOfActionAnnihilation", "EndOfAction"]
+    },
     "ClickCornerAfterPRTS": {
         "algorithm": "JustReturn",
         "action": "ClickRect",
@@ -1369,6 +1437,8 @@
         "maxTimes": 10,
         "postDelay": 3000,
         "next": [
+            "CheckLevelUp",
+            "AnnihilationPrtsRecordConfirm",
             "EndOfActionAnnihilation",
             "EndOfAction",
             "(ClickCorner + WaitAfterPRTS + StartUpThemes)#next ^ #self",
@@ -1380,17 +1450,6 @@
         "Doc": "本任务注册了插件 StageDropsTaskPlugin",
         "roi": [0, 290, 70, 60],
         "next": ["ClickCorner"]
-    },
-    "EndOfActionThenStop": {
-        "baseTask": "EndOfAction",
-        "template": "EndOfAction.png",
-        "reduceOtherTimes": [],
-        "preDelay": 5000,
-        "next": ["ClickCornerThenStop"]
-    },
-    "FightMissionFailedThenStop": {
-        "baseTask": "FightMissionFailedAndStop",
-        "next": ["EndOfActionThenStop"]
     },
     "EndOfActionAnnihilation": {
         "Doc": "本任务注册了插件 StageDropsTaskPlugin",
@@ -1485,18 +1544,18 @@
     },
     "MedicineInventory": {
         "baseTask": "NumberOcrReplace",
-        "rectMove": [-29, 87, 40, 33],
+        "rectMove": [-55, 87, 66, 33],
         "binThreshold": [220, 255]
     },
     "MedicineExpiringTime": {
         "algorithm": "OcrDetect",
         "text": [],
         "ocrReplace": [
-            ["(\\d+)天", "${1}"],
+            ["[^\\d]*(\\d+)天", "${1}"],
             [".+(小时|分钟)", "0"],
             ["^\\d+(小|分)$", "0"]
         ],
-        "rectMove": [-55, 135, 65, 20]
+        "rectMove": [-55, 132, 65, 25]
     },
     "UsingMedicine-Target": {
         "baseTask": "NumberOcrReplace",
@@ -1745,7 +1804,7 @@
     "OrundumActivities": {
         "doc": "幸运墙领合成玉",
         "algorithm": "OcrDetect",
-        "text": ["幸运墙", "幸运", "好运墙", "好运", "游乐", "育婴圣堂", "许愿墙"],
+        "text": ["幸运墙", "幸运", "好运墙", "好运", "游乐", "育婴圣堂", "许愿墙", "告示板", "泽尔格勒"],
         "action": "ClickSelf",
         "roi": [64, 72, 97, 156],
         "next": ["OrundumActivitiesChoose", "OrundumActivitiesReturn"],
@@ -2192,7 +2251,7 @@
         "algorithm": "OcrDetect",
         "isAscii": true,
         "text": [],
-        "roi": [1147, 26, 57, 27]
+        "roi": [1140, 25, 64, 30]
     },
     "CreditShop-DiscountOcr": {
         "algorithm": "OcrDetect",
@@ -2871,6 +2930,21 @@
         "template": "InfrastTradeSyntheticJadeFlag.png",
         "roi": [900, 500, 380, 220]
     },
+    "VerifyProductChangedToBattleRecord": {
+        "template": "InfrastMfgDogFoodFlag.png",
+        "roi": [1030, 220, 190, 65],
+        "preDelay": 500
+    },
+    "VerifyProductChangedToPureGold": {
+        "template": "InfrastMfgPureGoldFlag.png",
+        "roi": [1030, 220, 190, 65],
+        "preDelay": 500
+    },
+    "VerifyProductChangedToOriginiumShard": {
+        "template": "InfrastMfgOriginStoneFlag.png",
+        "roi": [1030, 220, 190, 65],
+        "preDelay": 500
+    },
     "InfrastAddOperatorMfgGentle": {
         "template": "AddOperatorMfgGentle.png",
         "templThreshold": 0.8,
@@ -3527,7 +3601,7 @@
     },
     "BattleQuickFormation-OperNameFlagBase": {
         "template": "empty.png",
-        "roi": [342, 66, 866, 332]
+        "roi": [342, 66, 768, 332]
     },
     "BattleQuickFormation-OperNameFlag0": {
         "baseTask": "BattleQuickFormation-OperNameFlagBase"
@@ -4011,7 +4085,8 @@
         "templThreshold_Doc": "这里用来作为基线间距阈值",
         "specialParams": [100],
         "specialParams_Doc": "基线长度阈值（不小于100）",
-        "colorScales": [[45, 255]],
+        "colorScales": [[30, 255]],
+        "colorScales_Doc": "阈值从45降至30，原值对仅在剿灭Reward出现的暗橙色基线(RGB66,28,11~RGB70,32,15)边缘响应不足",
         "rectMove": [181, 40, 25, 0],
         "rectMove_Doc": "作为hsv阈值使用"
     },
@@ -4571,20 +4646,53 @@
         "next": ["BattleStartPlot"],
         "maxTimes": 1
     },
-    "Copilot@ClickCornerUntilEndOfAction": {
+    "Copilot@WaitUntilEndOfAction": {
         "algorithm": "JustReturn",
-        "maxTimes": 30,
+        "maxTimes": 50,
         "exceededNext": ["Copilot@EndOfAction"],
-        "next": ["Copilot@SkipThePreBattlePlot", "Copilot@EndOfAction", "Copilot@ClickCornerBeforeThreeStars"]
+        "next": [
+            "Copilot@SkipThePreBattlePlot",
+            "Copilot@EndOfAction",
+            "Copilot@EndOfAction-Sandbox",
+            "Copilot@FightMissionFailed",
+            "Copilot@WaitUntilEndOfAction"
+        ]
+    },
+    "Copilot@WaitUntilEndOfAction-Bypass": {
+        "algorithm": "JustReturn",
+        "maxTimes": 50,
+        "exceededNext": ["Copilot@EndOfAction-Bypass"],
+        "next": [
+            "Copilot@SkipThePreBattlePlot",
+            "Copilot@EndOfAction-Bypass",
+            "Copilot@EndOfAction-Sandbox",
+            "Copilot@FightMissionFailed",
+            "Copilot@WaitUntilEndOfAction-Bypass"
+        ]
     },
     "Copilot@SkipThePreBattlePlotConfirm": {
         "template": "SkipThePreBattlePlotConfirm.png",
-        "next": ["Copilot@ClickCornerUntilEndOfAction"]
+        "next": ["Copilot@WaitUntilEndOfAction"]
     },
     "Copilot@EndOfAction": {
         "template": "EndOfAction.png",
         "reduceOtherTimes": [],
         "next": ["Copilot@StageDrops-Stars-3", "Copilot@StageDrops-Stars-Adverse"]
+    },
+    "Copilot@EndOfAction-Bypass": {
+        "baseTask": "Copilot@EndOfAction",
+        "template": "EndOfAction.png",
+        "reduceOtherTimes": [],
+        "next": [
+            "Copilot@StageDrops-Stars-3",
+            "Copilot@StageDrops-Stars-Adverse",
+            "Copilot@ClickCornerUntilStartButton"
+        ]
+    },
+    "Copilot@FightMissionFailed": {
+        "exceededNext": [],
+        "onErrorNext": [],
+        "next": ["Copilot@EndOfAction", "Copilot@EndOfAction-Sandbox"]
     },
     "Copilot@StageDrops-Stars-3": {
         "Doc": "如果没有三星就终止",
@@ -4596,21 +4704,26 @@
         "template": "StageDrops-Stars-Adverse.png",
         "next": ["Copilot@ClickCornerUntilStartButton"]
     },
-    "Copilot@ClickCornerBeforeThreeStars": {
-        "Doc": "三星之前",
-        "baseTask": "Copilot@ClickCornerUntilStartButton",
-        "next": ["Copilot@ClickCornerUntilEndOfAction"]
+    "Copilot@EndOfAction-Sandbox": {
+        "algorithm": "OcrDetect",
+        "text": ["MISSION", "RESULTS"],
+        "roi": [540, 645, 200, 25],
+        "isAscii": true,
+        "ocrReplace": [["l", "I"]],
+        "next": ["Copilot@ClickCornerUntilStartButton"]
     },
     "Copilot@ClickCornerUntilStartButton": {
         "Doc": "三星之后",
         "next": [
             "Copilot@BattleStartPreFlag",
             "Copilot@BattleStartPreFlag-Return",
+            "Copilot@ClickCornerUntilStartButton@LoadingIcon",
             "Copilot@ClickCornerUntilStartButton"
         ]
     },
     "Copilot@BattleStartPreFlag": {
-        "baseTask": "BattleStartPreFlag"
+        "baseTask": "BattleStartPreFlag",
+        "reduceOtherTimes": ["Copilot@WaitUntilEndOfAction"]
     },
     "Copilot@BattleStartPreFlag-Return": {
         "doc": "使用左上角的黑色返回按钮作为flag",
@@ -4618,7 +4731,8 @@
         "template": "Return.png",
         "action": "DoNothing",
         "preDelay": 500,
-        "postDelay": 1000
+        "postDelay": 1000,
+        "reduceOtherTimes": ["Copilot@WaitUntilEndOfAction"]
     },
     "ClickCornerUntilStartButton": {
         "algorithm": "JustReturn",
@@ -4736,8 +4850,10 @@
     "ChooseBattleRecord": {
         "action": "ClickSelf",
         "cache": true,
-        "roi": [240, 255, 190, 195],
-        "next": ["ClickProductMax"],
+        "roi": [250, 270, 165, 165],
+        "maxTimes": 3,
+        "next": ["ClickProductMax", "#self"],
+        "exceededNext": ["ClickProductMax"],
         "preDelay": 500,
         "Doc": "加前延时等动画结束再执行点击"
     },
@@ -4752,13 +4868,17 @@
         "action": "ClickSelf",
         "cache": true,
         "roi": [10, 170, 100, 110],
-        "next": ["ChoosePureGold"]
+        "maxTimes": 3,
+        "next": ["ChoosePureGold", "#self"],
+        "exceededNext": ["ChoosePureGold"]
     },
     "ChoosePureGold": {
         "action": "ClickSelf",
         "cache": true,
-        "roi": [240, 76, 190, 195],
-        "next": ["ClickProductMax"],
+        "roi": [250, 90, 165, 165],
+        "maxTimes": 3,
+        "next": ["ClickProductMax", "#self"],
+        "exceededNext": ["ClickProductMax"],
         "preDelay": 500,
         "Doc": "加前延时等动画结束再执行点击"
     },
@@ -4766,13 +4886,17 @@
         "action": "ClickSelf",
         "cache": true,
         "roi": [10, 360, 100, 110],
-        "next": ["ChooseOriginiumShard"]
+        "maxTimes": 3,
+        "next": ["ChooseOriginiumShard", "#self"],
+        "exceededNext": ["ChooseOriginiumShard"]
     },
     "ChooseOriginiumShard": {
         "action": "ClickSelf",
         "cache": true,
-        "roi": [240, 76, 190, 195],
-        "next": ["ClickProductMax"],
+        "roi": [250, 90, 165, 165],
+        "maxTimes": 3,
+        "next": ["ClickProductMax", "#self"],
+        "exceededNext": ["ClickProductMax"],
         "preDelay": 500,
         "Doc": "加前延时等动画结束再执行点击"
     },
@@ -4781,24 +4905,30 @@
         "template": "ChooseProductList.png",
         "cache": true,
         "roi": [1000, 117, 115, 60],
-        "specificRect": [1030, 180, 80, 80],
-        "next": ["ChooseBattleRecord"]
+        "specificRect": [1075, 345, 102, 98],
+        "maxTimes": 3,
+        "next": ["ChooseBattleRecord", "#self"],
+        "exceededNext": ["ChooseBattleRecord"]
     },
     "ChangeProductToPureGold": {
         "action": "ClickRect",
         "template": "ChooseProductList.png",
         "cache": true,
         "roi": [1000, 117, 115, 60],
-        "specificRect": [1030, 180, 80, 80],
-        "next": ["ChoosePureGoldTab"]
+        "specificRect": [1075, 345, 102, 98],
+        "maxTimes": 3,
+        "next": ["ChoosePureGoldTab", "#self"],
+        "exceededNext": ["ChoosePureGoldTab"]
     },
     "ChangeProductToOriginiumShard": {
         "action": "ClickRect",
         "template": "ChooseProductList.png",
         "cache": true,
         "roi": [1000, 117, 115, 60],
-        "specificRect": [1030, 180, 80, 80],
-        "next": ["ChooseOriginiumShardTab"]
+        "specificRect": [1075, 345, 102, 98],
+        "maxTimes": 3,
+        "next": ["ChooseOriginiumShardTab", "#self"],
+        "exceededNext": ["ChooseOriginiumShardTab"]
     },
     "GachaOnce": {
         "algorithm": "JustReturn",
@@ -4943,7 +5073,20 @@
         "action": "ClickSelf",
         "text": ["资质凭证区"],
         "roi": [108, 163, 124, 56],
-        "next": ["Store@EnterTicketStore@LoadingIcon", "GreenTicket@Store@ClickFirstFloor"]
+        "next": [
+            "Store@EnterTicketStore@LoadingIcon",
+            "GreenTicket@Store@ClickFirstFloor",
+            "GreenTicket@Store@SwitchToSecondFloor"
+        ]
+    },
+    "GreenTicket@Store@SwitchToSecondFloor": {
+        "doc": "备选方案：点击二层使一层按钮变为灰底，提高一层OCR识别成功率",
+        "algorithm": "OcrDetect",
+        "text": ["2"],
+        "action": "ClickSelf",
+        "isAscii": false,
+        "roi": [262, 364, 38, 58],
+        "next": ["GreenTicket@Store@ClickFirstFloor"]
     },
     "GreenTicket@Store@ClickFirstFloor": {
         "algorithm": "OcrDetect",
@@ -4952,7 +5095,7 @@
         "action": "ClickSelf",
         "roi": [263, 196, 35, 73],
         "sub": ["SlowlySwipeToTheLeft"],
-        "postDelay": 1000,
+        "postDelay": 500,
         "next": ["GreenTicket@Store@ClickItemList#next", "GreenTicket@Store@ClickSecondFloor"]
     },
     "GreenTicket@Store@ClickItem": {
@@ -5046,7 +5189,46 @@
         "maxTimes": 1,
         "sub": ["SlowlySwipeToTheLeft*3"],
         "postDelay": 1000,
-        "next": ["GreenTicket@Store@ClickItemList#next", "Stop"]
+        "next": ["GreenTicket@Store@ClickSecondFloorItemList#next", "Stop"]
+    },
+    "GreenTicket@Store@ClickSecondFloorItemList": {
+        "algorithm": "JustReturn",
+        "next": [
+            "GreenTicket@Store@ClickSecondFloorItem_Headhunting_Permit",
+            "GreenTicket@Store@ClickSecondFloorItem_Recruitment_Permit"
+        ]
+    },
+    "GreenTicket@Store@ClickSecondFloorItem": {
+        "baseTask": "GreenTicket@Store@ClickItem",
+        "template": "empty.png",
+        "next": ["GreenTicket@Store@SecondFloorChooseMaxAmount"]
+    },
+    "GreenTicket@Store@ClickSecondFloorItem_Headhunting_Permit": {
+        "doc": "二层-单抽",
+        "baseTask": "GreenTicket@Store@ClickSecondFloorItem",
+        "template": "items/7003.png"
+    },
+    "GreenTicket@Store@ClickSecondFloorItem_Recruitment_Permit": {
+        "doc": "二层-招募许可",
+        "baseTask": "GreenTicket@Store@ClickSecondFloorItem",
+        "template": "items/7001.png"
+    },
+    "GreenTicket@Store@SecondFloorChooseMaxAmount": {
+        "baseTask": "GreenTicket@Store@ChooseMaxAmount",
+        "next": ["GreenTicket@Store@UnderfundedOCR", "GreenTicket@Store@SecondFloorPurchase"]
+    },
+    "GreenTicket@Store@SecondFloorPurchase": {
+        "baseTask": "GreenTicket@Store@Purchase",
+        "next": ["GreenTicket@Store@SecondFloorPurchasedConfirm"]
+    },
+    "GreenTicket@Store@SecondFloorPurchasedConfirm": {
+        "baseTask": "GreenTicket@Store@PurchasedConfirm",
+        "template": "CreditShop-Bought.png",
+        "next": [
+            "GreenTicket@Store@SecondFloorPurchasedConfirm",
+            "GreenTicket@Store@ClickSecondFloorItemList#next",
+            "Stop"
+        ]
     },
     "YellowTicket@Store@ChooseTicketType": {
         "algorithm": "OcrDetect",

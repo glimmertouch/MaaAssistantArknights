@@ -46,6 +46,8 @@ enum class InstanceOptionKey
     DeploymentWithPause = 3, // 自动战斗、肉鸽、保全 是否使用 暂停下干员， "0" | "1"
     AdbLiteEnabled = 4,      // 是否使用 AdbLite， "0" | "1"
     KillAdbOnExit = 5,       // 退出时是否杀掉 Adb 进程， "0" | "1"
+    ClientType = 6,          // 客户端类型（游戏渠道）。仅当连接配置在 connect 阶段需要 [PackageName] 时使用，
+                             // 当前内置配置为 Androws / WSA；不替代 StartUpTask 的 client_type 参数。
 };
 
 enum class TouchMode
@@ -55,6 +57,7 @@ enum class TouchMode
     Maatouch = 2,
     MacPlayTools = 3,
     MaaFwAdb = 4,
+    Android = 5,
 };
 
 #ifdef _WIN32
@@ -153,7 +156,7 @@ struct Point
     {                                                                     \
         return { lhs.x Op rhs.x, lhs.y Op rhs.y };                        \
     }                                                                     \
-    friend Point& operator Op##=(Point& val, const Point& opd) noexcept   \
+    friend Point& operator Op## =(Point& val, const Point& opd) noexcept   \
     {                                                                     \
         val.x Op## = opd.x;                                               \
         val.y Op## = opd.y;                                               \

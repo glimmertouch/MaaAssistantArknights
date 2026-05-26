@@ -42,8 +42,10 @@ public class BarkNotificationProvider(IHttpService httpService) : IExternalNotif
             return false;
         }
 
+        var normalizedBase = apiBase.TrimEnd('/') + "/";
+        var pushUri = new Uri(new Uri(normalizedBase), "push");
         var response = await httpService.PostAsJsonAsync(
-            new Uri(new Uri(apiBase), "/push"),
+            pushUri,
             new BarkPostContent { Title = title, Content = content, SendKey = sendKey });
         if (response == null)
         {
@@ -79,7 +81,7 @@ public class BarkNotificationProvider(IHttpService httpService) : IExternalNotif
         public string Group { get; } = "MaaAssistantArknights";
 
         [JsonPropertyName("icon")]
-        public static string Icon { get => "https://cdn.jsdelivr.net/gh/MaaAssistantArknights/design@main/logo/maa-logo_256x256.png"; }
+        public static string Icon { get => "https://cdn.jsdelivr.net/gh/MaaAssistantArknights/design@main/v2/icons/maa-logo_256x256.png"; }
 
         // ReSharper restore UnusedAutoPropertyAccessor.Local
         // ReSharper restore UnusedMember.Local
